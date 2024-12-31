@@ -24,7 +24,7 @@ public class Customer {
   String pointOfContactID;
   LeadStatus leadStatus = LeadStatus.PROSPECTIVE;
   Integer frequencyOfCallsInDays = 10;
-  String nextCallScheduledTimestampInUTC;
-  String lastCallScheduledTimestampInUTC;
+  String nextCallScheduledTimestamp;
+  String lastCallScheduledTimestamp;
 
 }

@@ -54,7 +54,7 @@ public class PointOfContactServiceImpl implements PointOfContactService {
         .name(pointOfContact.getName())
         .role(pointOfContact.getRole())
         .contactInformation(pointOfContact.getContactInformation())
-        .workingHoursInUTC(pointOfContact.getWorkingHoursInUTC())
+        .workingHours(pointOfContact.getWorkingHours())
         .customerID(pointOfContact.getCustomerID())
         .build();
   }
@@ -64,7 +64,7 @@ public class PointOfContactServiceImpl implements PointOfContactService {
         .name(pointOfContactEntity.getName())
         .role(pointOfContactEntity.getRole())
         .contactInformation(pointOfContactEntity.getContactInformation())
-        .workingHoursInUTC(pointOfContactEntity.getWorkingHoursInUTC())
+        .workingHours(pointOfContactEntity.getWorkingHours())
         .customerID(pointOfContactEntity.getCustomerID())
         .build();
   }

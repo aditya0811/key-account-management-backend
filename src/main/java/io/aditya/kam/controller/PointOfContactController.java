@@ -26,7 +26,7 @@ public class PointOfContactController {
     this.pointOfContactService = pointOfContactService;
   }
 
-  @PutMapping(path="/customers/{customerID}/point-of-contacts/{pointOfContactID}")
+  @PutMapping(path="/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}/point-of-contacts/{pointOfContactID}")
   public ResponseEntity<PointOfContact> createPointOfContact(
       @PathVariable String customerID,
       @PathVariable String pointOfContactID,
@@ -40,7 +40,7 @@ public class PointOfContactController {
     return response;
   }
 
-  @GetMapping(path="/customers/{customerID}/point-of-contacts/{pointOfContactID}")
+  @GetMapping(path="/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}/point-of-contacts/{pointOfContactID}")
   public ResponseEntity<PointOfContact> retrievePointOfContact(@PathVariable String pointOfContactID) {
     final Optional<PointOfContact> foundPointOfContact = pointOfContactService.findById(pointOfContactID);
     return foundPointOfContact
@@ -48,7 +48,7 @@ public class PointOfContactController {
         .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
 
-  @GetMapping(path = "/customers/{customerID}/point-of-contacts")
+  @GetMapping(path = "/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}/point-of-contacts")
   public ResponseEntity<List<PointOfContact>> listPointOfContacts(@PathVariable String customerID) {
     List<PointOfContact> customerPointOfContact = pointOfContactService
         .listPointOfContacts()

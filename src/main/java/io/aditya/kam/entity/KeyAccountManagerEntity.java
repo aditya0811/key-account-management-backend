@@ -30,7 +30,7 @@ public class KeyAccountManagerEntity {
   //Should have country code
   String contactInformation;
 
-  String workingHoursInUTC;
+  String workingHours;
 
 
 }

@@ -37,7 +37,7 @@ public class KeyManagerControllerIntegrationTest {
   public void testThatKeyAccountManagerIsCreated()
       throws Exception {
     final KeyAccountManager keyAccountManager = TestData.getKeyAccountManager();
-    _mockMvc.perform(MockMvcRequestBuilders.put("/key-account-managers/" + keyAccountManager.getKeyAccountManagerID())
+    _mockMvc.perform(MockMvcRequestBuilders.put("/v1/key-account-managers/" + keyAccountManager.getKeyAccountManagerID())
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(keyAccountManager)))
         .andExpect(MockMvcResultMatchers.status().isCreated())
@@ -50,7 +50,7 @@ public class KeyManagerControllerIntegrationTest {
       throws Exception {
     final KeyAccountManager keyAccountManager = TestData.getKeyAccountManager();
     _keyAccountManagerService.create(keyAccountManager);
-    _mockMvc.perform(MockMvcRequestBuilders.get("/key-account-managers/" + keyAccountManager.getKeyAccountManagerID())
+    _mockMvc.perform(MockMvcRequestBuilders.get("/v1/key-account-managers/" + keyAccountManager.getKeyAccountManagerID())
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(keyAccountManager)))
         .andExpect(MockMvcResultMatchers.status().isOk())
@@ -60,14 +60,14 @@ public class KeyManagerControllerIntegrationTest {
 
   @Test
   public void testThatKeyAccountManagerNotExists() throws Exception {
-    _mockMvc.perform(MockMvcRequestBuilders.get("/key-account-managers/" + 22))
+    _mockMvc.perform(MockMvcRequestBuilders.get("/v1/key-account-managers/" + 22))
         .andExpect(MockMvcResultMatchers.status().isNotFound());
   }
 
   @Test
   public void testThatListKeyAccountManagersReturnsHttp200EmptyListWhenNoKeyAccountManagersExist() throws Exception {
     _mockMvc
-        .perform(MockMvcRequestBuilders.get("/key-account-managers"))
+        .perform(MockMvcRequestBuilders.get("/v1/key-account-managers"))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().string("[]"));
   }
@@ -78,7 +78,7 @@ public class KeyManagerControllerIntegrationTest {
     _keyAccountManagerService.create(keyAccountManager);
 
     _mockMvc
-        .perform(MockMvcRequestBuilders.get("/key-account-managers"))
+        .perform(MockMvcRequestBuilders.get("/v1/key-account-managers"))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.jsonPath("$.[0].keyAccountManagerID")
             .value(keyAccountManager.getKeyAccountManagerID()));

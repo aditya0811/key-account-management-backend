@@ -16,7 +16,7 @@ public class TestData {
         .name("Ramesh")
         .role("key-account-manager")
         .contactInformation("+91 9434434343")
-        .workingHoursInUTC("02:30 - 10:30")
+        .workingHours("02:30 - 10:30")
         .build();
   }
 
@@ -27,7 +27,7 @@ public class TestData {
         .name("Ramesh")
         .role("key-account-manager")
         .contactInformation("+91 9434434343")
-        .workingHoursInUTC("02:30 - 10:30")
+        .workingHours("02:30 - 10:30")
         .build();
   }
 

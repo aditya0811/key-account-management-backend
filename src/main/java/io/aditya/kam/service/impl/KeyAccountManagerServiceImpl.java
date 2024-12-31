@@ -55,7 +55,7 @@ public class KeyAccountManagerServiceImpl implements KeyAccountManagerService {
         .name(keyAccountManager.getName())
         .role(keyAccountManager.getRole())
         .contactInformation(keyAccountManager.getContactInformation())
-        .workingHoursInUTC(keyAccountManager.getWorkingHoursInUTC())
+        .workingHours(keyAccountManager.getWorkingHours())
         .build();
   }
 
@@ -64,7 +64,7 @@ public class KeyAccountManagerServiceImpl implements KeyAccountManagerService {
         .name(keyAccountManagerEntity.getName())
         .role(keyAccountManagerEntity.getRole())
         .contactInformation(keyAccountManagerEntity.getContactInformation())
-        .workingHoursInUTC(keyAccountManagerEntity.getWorkingHoursInUTC())
+        .workingHours(keyAccountManagerEntity.getWorkingHours())
         .build();
   }
 }

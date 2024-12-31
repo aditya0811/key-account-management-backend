@@ -1,6 +1,5 @@
 package io.aditya.kam.controller;
 
-import io.aditya.kam.entity.Customer;
 import io.aditya.kam.entity.KeyAccountManager;
 import io.aditya.kam.service.KeyAccountManagerService;
 import java.util.List;
@@ -27,7 +26,7 @@ public class KeyAccountManagerController {
     this.keyAccountManagerService = keyAccountManagerService;
   }
 
-  @PutMapping(path="/key-account-managers/{keyAccountManagerID}")
+  @PutMapping(path="/v1/key-account-managers/{keyAccountManagerID}")
   public ResponseEntity<KeyAccountManager> createKeyAccountManager(
       @PathVariable Integer keyAccountManagerID,
       @RequestBody final KeyAccountManager keyAccountManager) {
@@ -38,7 +37,7 @@ public class KeyAccountManagerController {
     return response;
   }
 
-  @GetMapping(path="/key-account-managers/{keyAccountManagerID}")
+  @GetMapping(path="/v1/key-account-managers/{keyAccountManagerID}")
   public ResponseEntity<KeyAccountManager> retrieveKeyAccountManager(@PathVariable Integer keyAccountManagerID) {
     final Optional<KeyAccountManager> foundKeyAccountManager = keyAccountManagerService.findById(keyAccountManagerID);
     return foundKeyAccountManager
@@ -46,7 +45,7 @@ public class KeyAccountManagerController {
         .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
 
-  @GetMapping(path = "/key-account-managers")
+  @GetMapping(path = "/v1/key-account-managers")
   public ResponseEntity<List<KeyAccountManager>> listKeyAccountManagers() {
     return new ResponseEntity<List<KeyAccountManager>>(keyAccountManagerService.listKeyAccountManagers(), HttpStatus.OK);
   }

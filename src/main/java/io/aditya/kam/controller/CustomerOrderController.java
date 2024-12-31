@@ -24,7 +24,7 @@ public class CustomerOrderController {
     this.customerOrderService = customerOrderService;
   }
 
-  @PutMapping(path="/customers/{customerID}/orders/{orderID}")
+  @PutMapping(path="/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}/orders/{orderID}")
   public ResponseEntity<CustomerOrder> createOrder(@PathVariable String orderID,
       @PathVariable String customerID,
       @RequestBody final CustomerOrder customerOrder) {
@@ -36,16 +36,15 @@ public class CustomerOrderController {
     return new ResponseEntity<>(savedCustomerOrder, HttpStatus.CREATED);
   }
 
-  @GetMapping(path="/customers/{customerID}/orders/{orderID}")
-  public ResponseEntity<CustomerOrder> retrieveOrder(@PathVariable String orderID,
-      @PathVariable String customerID) {
+  @GetMapping(path="/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}/orders/{orderID}")
+  public ResponseEntity<CustomerOrder> retrieveOrder(@PathVariable String orderID) {
     final Optional<CustomerOrder> foundOrder = customerOrderService.findById(orderID);
     return foundOrder
         .map(customerOrder -> new ResponseEntity<>(customerOrder, HttpStatus.OK))
         .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
 
-  @GetMapping(path = "/customers/{customerID}/orders")
+  @GetMapping(path = "/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}/orders")
   public ResponseEntity<List<CustomerOrder>> listAllOrdersForCustomer(@PathVariable String customerID) {
     List<CustomerOrder> customerCustomerOrders = customerOrderService
         .listOrders()

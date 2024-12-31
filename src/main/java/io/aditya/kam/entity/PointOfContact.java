@@ -1,7 +1,5 @@
 package io.aditya.kam.entity;
 
-import io.aditya.kam.enums.CustomerType;
-import io.aditya.kam.enums.LeadStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,7 +20,7 @@ public class PointOfContact {
   //Should have country code
   String contactInformation;
 
-  String workingHoursInUTC;
+  String workingHours;
 
 }
 

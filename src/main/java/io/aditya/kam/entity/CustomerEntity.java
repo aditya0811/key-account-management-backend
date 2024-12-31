@@ -1,6 +1,5 @@
 package io.aditya.kam.entity;
 
-import io.aditya.kam.enums.LeadStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -30,6 +29,6 @@ public class CustomerEntity {
   String pointOfContactID;
   String leadStatus;
   Integer frequencyOfCallsInDays;
-  String nextCallScheduledTimestampInUTC;
-  String lastCallScheduledTimestampInUTC;
+  String nextCallScheduledTimestamp;
+  String lastCallScheduledTimestamp;
 }

@@ -1,16 +1,18 @@
 package io.aditya.kam.utils;
 
 import io.aditya.kam.entity.Customer;
-import io.aditya.kam.entity.PointOfContact;
+import io.aditya.kam.entity.CustomerOrder;
+import io.aditya.kam.entity.Interaction;
+import io.aditya.kam.enums.LeadStatus;
+import io.aditya.kam.service.CustomerOrderService;
+import io.aditya.kam.service.CustomerService;
 import io.aditya.kam.service.KeyAccountManagerService;
 import io.aditya.kam.service.PointOfContactService;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.util.Arrays;
+import java.util.Optional;
 import java.util.TimeZone;
 
 
@@ -122,9 +124,9 @@ public class ApplicationUtils {
   public static String getDateWithFrequencyOfCalls(KeyAccountManagerService keyAccountManagerService,
       PointOfContactService pointOfContactService, Customer customer) {
     String keyAccountManagerWorkingHours = keyAccountManagerService.findById(customer.getKeyAccountManagerID()).get()
-        .getWorkingHoursInUTC();
+        .getWorkingHours();
     String pointOfContactWorkingHours = pointOfContactService.findById(customer.getPointOfContactID()).get()
-        .getWorkingHoursInUTC();
+        .getWorkingHours();
     return ApplicationUtils.getDateWithFrequencyOfCalls(customer.getFrequencyOfCallsInDays(), pointOfContactWorkingHours)
         + " " +
         ApplicationUtils.getCommonTimeHours(keyAccountManagerWorkingHours, pointOfContactWorkingHours);
@@ -141,5 +143,51 @@ public class ApplicationUtils {
     LocalDateTime now = LocalDateTime.now();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     return now.format(formatter);
+  }
+
+  public static void updateCustomerAndOrder(Interaction interaction, CustomerService customerService,
+      CustomerOrderService customerOrderService, KeyAccountManagerService keyAccountManagerService,
+      PointOfContactService pointOfContactService) {
+    Optional<Customer> optionalCustomer = customerService.findById(interaction.getCustomerID());
+    if(optionalCustomer.isPresent()) {
+      Customer customer = optionalCustomer.get();
+      if (customer.getLeadStatus() == LeadStatus.PROSPECTIVE) {
+        customer.setLeadStatus(LeadStatus.TRACKING);
+      }
+      if (interaction.getIsConverted()){
+        customer.setLeadStatus(LeadStatus.CONVERTED);
+      }
+
+      if (interaction.getIsKeyAccountManagerChanged()){
+        customer.setKeyAccountManagerID(interaction.getChangedKeyAccountManagerID());
+      }
+
+      if (interaction.getIsOrderPlaced()){
+        customer.setNumberOfOrders(customer.getNumberOfOrders()+1);
+        customer.setTotalTransactionValue(customer.getTotalTransactionValue()+interaction.getTransactionValue());
+        CustomerOrder customerOrder = CustomerOrder.builder()
+            .customerID(interaction.getCustomerID())
+            .orderID(interaction.getOrderID())
+            .transactionValue(interaction.getTransactionValue())
+            .interactionID(interaction.getInteractionID())
+            .build();
+        customerOrderService.create(customerOrder);
+      }
+
+      //poc update before call update
+
+      //last call is updated with current call
+
+      customer.setLastCallScheduledTimestamp(customer.getNextCallScheduledTimestamp());
+      String nextMeetingTimestamp = ApplicationUtils.getDateWithFrequencyOfCalls(keyAccountManagerService,
+          pointOfContactService, customer);
+      customer.setNextCallScheduledTimestamp(nextMeetingTimestamp);
+
+
+      //final save customer
+      customerService.save(customer);
+    }
+
+
   }
 }

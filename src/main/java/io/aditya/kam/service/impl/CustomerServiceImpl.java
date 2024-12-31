@@ -76,8 +76,8 @@ public class CustomerServiceImpl implements CustomerService {
         .pointOfContactID(customer.getPointOfContactID())
         .leadStatus(String.valueOf(customer.getLeadStatus()))
         .frequencyOfCallsInDays(customer.getFrequencyOfCallsInDays())
-        .nextCallScheduledTimestampInUTC(customer.getNextCallScheduledTimestampInUTC())
-        .lastCallScheduledTimestampInUTC(customer.getLastCallScheduledTimestampInUTC())
+        .nextCallScheduledTimestamp(customer.getNextCallScheduledTimestamp())
+        .lastCallScheduledTimestamp(customer.getLastCallScheduledTimestamp())
         .build();
   }
 
@@ -93,8 +93,8 @@ public class CustomerServiceImpl implements CustomerService {
         .pointOfContactID(customerEntity.getPointOfContactID())
         .leadStatus(LeadStatus.valueOf(customerEntity.getLeadStatus()))
         .frequencyOfCallsInDays(customerEntity.getFrequencyOfCallsInDays())
-        .nextCallScheduledTimestampInUTC(customerEntity.getNextCallScheduledTimestampInUTC())
-        .lastCallScheduledTimestampInUTC(customerEntity.getLastCallScheduledTimestampInUTC())
+        .nextCallScheduledTimestamp(customerEntity.getNextCallScheduledTimestamp())
+        .lastCallScheduledTimestamp(customerEntity.getLastCallScheduledTimestamp())
         .build();
   }
 }

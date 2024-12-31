@@ -36,18 +36,16 @@ public class CustomerController {
     this.pointOfContactService = pointOfContactService;
   }
 
-  @PutMapping(path="/customers/{customerID}")
+  @PutMapping(path="/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}")
   public ResponseEntity<Customer> createAndUpdateCustomer(
       @PathVariable String customerID,
+      @PathVariable Integer keyAccountManagerID,
       @RequestBody final Customer customer) {
     //TODO we maynot need this, if request body, does not have id, query parameter need to have id.
     customer.setCustomerID(customerID);
+    customer.setKeyAccountManagerID(keyAccountManagerID);
+    //TODO only useful, if we are using this to update a customer, otherwise no need for if else
     final boolean isCustomerExists = customerService.isCustomerIDExists(customer);
-//    if (isCustomerExists) {
-//      updateCustomer(customer, customerService.findById(customerID).get());
-//    }
-
-
     final Customer savedCustomer = customerService.save(customer);
     if (isCustomerExists) {
       return new ResponseEntity<>(savedCustomer, HttpStatus.OK);
@@ -56,8 +54,28 @@ public class CustomerController {
     }
   }
 
+  @GetMapping(path="/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}")
+  public ResponseEntity<Customer> retrieveCustomer(@PathVariable String customerID) {
+    final Optional<Customer> foundCustomer = customerService.findById(customerID);
+    return foundCustomer
+        .map(customer -> new ResponseEntity<>(customer, HttpStatus.OK))
+        .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+  }
+
+
+  //TODO may need to route this to KAM, inject service
+  @GetMapping(path = "/v1/key-account-managers/{keyAccountManagerID}/customers")
+  public ResponseEntity<List<Customer>> listAllCustomersForKeyAccountManager(@PathVariable Integer keyAccountManagerID) {
+    List<Customer> keyAccountManagerCustomers = customerService
+        .listCustomers()
+        .stream()
+        .filter(customer -> Objects.equals(customer.getKeyAccountManagerID(), keyAccountManagerID))
+        .toList();
+    return new ResponseEntity<List<Customer>>(keyAccountManagerCustomers, HttpStatus.OK);
+  }
+
   //TODO Non Restful, need to update this a) initial(first poc) (b) interaction (change in poc true, need to invoke endpoint, or just method will?)
-  @PutMapping(path="/customers/{customerID}/update-point-of-contact")
+  @PutMapping(path="/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}/update-point-of-contact")
   public ResponseEntity<Customer> updatePointOfContactID(
       @PathVariable String customerID,
       @RequestBody final Customer customer) {
@@ -69,7 +87,7 @@ public class CustomerController {
 
       String nextMeetingTimestamp = ApplicationUtils.getDateWithFrequencyOfCalls(keyAccountManagerService,
           pointOfContactService, customerFromDB.get());
-      customerFromDB.get().setNextCallScheduledTimestampInUTC(nextMeetingTimestamp);
+      customerFromDB.get().setNextCallScheduledTimestamp(nextMeetingTimestamp);
 
 
       final Customer savedCustomer = customerService.save(customerFromDB.get());
@@ -79,32 +97,8 @@ public class CustomerController {
     }
   }
 
-  @GetMapping(path="/customers/{customerID}")
-  public ResponseEntity<Customer> retrieveCustomer(@PathVariable String customerID) {
-    final Optional<Customer> foundCustomer = customerService.findById(customerID);
-    return foundCustomer
-        .map(customer -> new ResponseEntity<>(customer, HttpStatus.OK))
-        .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-  }
-
-  @GetMapping(path = "/customers")
-  public ResponseEntity<List<Customer>> listCustomers() {
-    return new ResponseEntity<List<Customer>>(customerService.listCustomers(), HttpStatus.OK);
-  }
-
   //TODO may need to route this to KAM, inject service
-  @GetMapping(path = "/key-account-managers/{keyAccountManagerID}/customers")
-  public ResponseEntity<List<Customer>> listAllCustomersForKeyAccountManager(@PathVariable Integer keyAccountManagerID) {
-    List<Customer> keyAccountManagerCustomers = customerService
-        .listCustomers()
-        .stream()
-        .filter(customer -> Objects.equals(customer.getKeyAccountManagerID(), keyAccountManagerID))
-        .toList();
-    return new ResponseEntity<List<Customer>>(keyAccountManagerCustomers, HttpStatus.OK);
-  }
-
-  //TODO may need to route this to KAM, inject service
-  @GetMapping(path = "/key-account-managers/{keyAccountManagerID}/{metric}/{count}/{descending}")
+  @GetMapping(path = "/v1/key-account-managers/{keyAccountManagerID}/customers/{metric}/{count}/{descending}")
   public ResponseEntity<List<Customer>> listAllCustomersForKeyAccountManagerForMetric(@PathVariable Integer keyAccountManagerID,
       @PathVariable String metric, @PathVariable int count, @PathVariable boolean descending) {
     List<Customer> keyAccountManagerCustomers = new java.util.ArrayList<>(customerService.listCustomers().stream()
@@ -126,30 +120,15 @@ public class CustomerController {
         Math.min(count,keyAccountManagerCustomersCount)), HttpStatus.OK);
   }
 
-  @GetMapping(path = "/key-account-managers/{keyAccountManagerID}/interactions-scheduled-today")
+  @GetMapping(path = "/v1/key-account-managers/{keyAccountManagerID}/customers/interactions-scheduled-today")
   public ResponseEntity<List<Customer>> listAllCustomersScheduledForToday(@PathVariable Integer keyAccountManagerID) {
     List<Customer> keyAccountManagerCustomers = customerService.listCustomers().stream()
         .filter(customer -> Objects.equals(customer.getKeyAccountManagerID(), keyAccountManagerID) &&
-                Objects.equals(customer.getNextCallScheduledTimestampInUTC().substring(0,10),
+                Objects.equals(customer.getNextCallScheduledTimestamp().substring(0,10),
                     ApplicationUtils.getCurrentDate()))
         .toList();
 
     return new ResponseEntity<List<Customer>>(keyAccountManagerCustomers, HttpStatus.OK);
   }
 
-//  private void updateCustomer(Customer customerFromBody, Customer existingCustomer) {
-//    try {
-//      ObjectMapper objectMapper = new ObjectMapper();
-//      Map<String, Object> requestMap = objectMapper.convertValue(customerFromBody, new TypeReference<Map<String, Object>>() {});
-//      for (String key : requestMap.keySet()) {
-//
-//      }
-//
-//
-//    } catch (Exception exception) {
-//
-//    }
-//
-//
-//  }
 }
