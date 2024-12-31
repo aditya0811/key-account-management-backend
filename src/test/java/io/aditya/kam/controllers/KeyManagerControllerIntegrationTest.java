@@ -3,7 +3,6 @@ package io.aditya.kam.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aditya.kam.TestData;
 import io.aditya.kam.entity.KeyAccountManager;
-import io.aditya.kam.service.CustomerService;
 import io.aditya.kam.service.KeyAccountManagerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@WithMockUser("admin")
 public class KeyManagerControllerIntegrationTest {
 
   @Autowired
@@ -40,6 +41,7 @@ public class KeyManagerControllerIntegrationTest {
     _mockMvc.perform(MockMvcRequestBuilders.put("/v1/key-account-managers/" + keyAccountManager.getKeyAccountManagerID())
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(keyAccountManager)))
+
         .andExpect(MockMvcResultMatchers.status().isCreated())
         .andExpect(MockMvcResultMatchers.jsonPath("$.keyAccountManagerID").value(keyAccountManager.getKeyAccountManagerID()));
 
