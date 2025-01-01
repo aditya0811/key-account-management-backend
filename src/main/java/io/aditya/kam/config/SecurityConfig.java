@@ -50,9 +50,14 @@ public class SecurityConfig {
         }
     );
 
+//    "/v3/**","/v1/**", "/swagger-ui.html"
     http.sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
         .csrf().disable()
+        .authorizeHttpRequests()
+        .requestMatchers("/v3/**","/swagger**")
+        .permitAll()
+        .and()
         .addFilter(filter).authorizeHttpRequests()
         .anyRequest().authenticated();
 
