@@ -1,6 +1,5 @@
 package io.aditya.kam.controller;
 
-import io.aditya.kam.entity.Customer;
 import io.aditya.kam.entity.PointOfContact;
 import io.aditya.kam.service.PointOfContactService;
 import java.util.List;
@@ -11,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,13 +25,10 @@ public class PointOfContactController {
     this.pointOfContactService = pointOfContactService;
   }
 
-  @PutMapping(path="/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}/point-of-contacts/{pointOfContactID}")
+  @PostMapping(path="/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}/point-of-contacts")
   public ResponseEntity<PointOfContact> createPointOfContact(
-      @PathVariable String customerID,
-      @PathVariable String pointOfContactID,
+      @PathVariable Integer customerID,
       @RequestBody final PointOfContact pointOfContact) {
-    //TODO Do we need these, if request body has it already
-    pointOfContact.setPointOfContactID(pointOfContactID);
     pointOfContact.setCustomerID(customerID);
     final PointOfContact savedPointOfContact = pointOfContactService.create(pointOfContact);
     ResponseEntity<PointOfContact> response =
@@ -41,7 +37,7 @@ public class PointOfContactController {
   }
 
   @GetMapping(path="/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}/point-of-contacts/{pointOfContactID}")
-  public ResponseEntity<PointOfContact> retrievePointOfContact(@PathVariable String pointOfContactID) {
+  public ResponseEntity<PointOfContact> retrievePointOfContact(@PathVariable Integer pointOfContactID) {
     final Optional<PointOfContact> foundPointOfContact = pointOfContactService.findById(pointOfContactID);
     return foundPointOfContact
         .map(pointOfContact -> new ResponseEntity<>(pointOfContact, HttpStatus.OK))
@@ -49,7 +45,7 @@ public class PointOfContactController {
   }
 
   @GetMapping(path = "/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}/point-of-contacts")
-  public ResponseEntity<List<PointOfContact>> listPointOfContacts(@PathVariable String customerID) {
+  public ResponseEntity<List<PointOfContact>> listPointOfContactsForCustomers(@PathVariable String customerID) {
     List<PointOfContact> customerPointOfContact = pointOfContactService
         .listPointOfContacts()
         .stream()

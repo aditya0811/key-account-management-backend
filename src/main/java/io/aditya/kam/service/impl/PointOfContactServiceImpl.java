@@ -34,9 +34,9 @@ public class PointOfContactServiceImpl implements PointOfContactService {
   }
 
   @Override
-  public Optional<PointOfContact> findById(String id) {
+  public Optional<PointOfContact> findById(Integer id) {
     Optional<PointOfContactEntity> foundPointOfContactEntity
-        = pointOfContactRepository.findById(String.valueOf(id));
+        = pointOfContactRepository.findById(id);
 
     return foundPointOfContactEntity.map(this::entityToPointOfContactConversion);
   }
@@ -50,7 +50,7 @@ public class PointOfContactServiceImpl implements PointOfContactService {
   }
 
   private PointOfContactEntity pointOfContactToEntityConversion(PointOfContact pointOfContact) {
-    return PointOfContactEntity.builder().pointOfContactID(pointOfContact.getPointOfContactID())
+    return PointOfContactEntity.builder()
         .name(pointOfContact.getName())
         .role(pointOfContact.getRole())
         .contactInformation(pointOfContact.getContactInformation())

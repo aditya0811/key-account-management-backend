@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface PointOfContactRepository extends JpaRepository<PointOfContactEntity, String> {
+public interface PointOfContactRepository extends JpaRepository<PointOfContactEntity, Integer> {
 
 
   

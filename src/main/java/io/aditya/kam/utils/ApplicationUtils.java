@@ -185,7 +185,7 @@ public class ApplicationUtils {
 
 
       //final save customer
-      customerService.save(customer);
+      customerService.update(customer);
     }
 
 

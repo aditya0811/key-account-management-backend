@@ -1,5 +1,6 @@
 package io.aditya.kam.controller;
 
+import io.aditya.kam.builder.KeyAccountManagerBuilder;
 import io.aditya.kam.entity.KeyAccountManager;
 import io.aditya.kam.service.KeyAccountManagerService;
 import java.util.List;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,11 +28,9 @@ public class KeyAccountManagerController {
     this.keyAccountManagerService = keyAccountManagerService;
   }
 
-  @PutMapping(path="/v1/key-account-managers/{keyAccountManagerID}")
+  @PostMapping(path="/v1/key-account-managers")
   public ResponseEntity<KeyAccountManager> createKeyAccountManager(
-      @PathVariable Integer keyAccountManagerID,
       @RequestBody final KeyAccountManager keyAccountManager) {
-    keyAccountManager.setKeyAccountManagerID(keyAccountManagerID);
     final KeyAccountManager savedKeyAccountManager = keyAccountManagerService.create(keyAccountManager);
     ResponseEntity<KeyAccountManager> response =
         new ResponseEntity<>(savedKeyAccountManager, HttpStatus.CREATED);

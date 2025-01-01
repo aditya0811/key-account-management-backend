@@ -1,5 +1,6 @@
 package io.aditya.kam.entity;
 
+import io.aditya.kam.builder.KeyAccountManagerBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +13,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class KeyAccountManager {
   Integer keyAccountManagerID;
   String name;

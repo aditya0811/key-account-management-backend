@@ -1,5 +1,6 @@
 package io.aditya.kam.service.impl;
 
+import io.aditya.kam.builder.KeyAccountManagerBuilder;
 import io.aditya.kam.entity.KeyAccountManager;
 import io.aditya.kam.entity.KeyAccountManagerEntity;
 import io.aditya.kam.repository.KeyAccountManagerRepository;
@@ -37,7 +38,7 @@ public class KeyAccountManagerServiceImpl implements KeyAccountManagerService {
   @Override
   public Optional<KeyAccountManager> findById(Integer id) {
     Optional<KeyAccountManagerEntity> foundKeyAccountManagerEntity
-        = keyAccountManagerRepository.findById(String.valueOf(id));
+        = keyAccountManagerRepository.findById(id);
 
     return foundKeyAccountManagerEntity.map(this::entityToKeyAccountManagerConversion);
   }
@@ -51,7 +52,7 @@ public class KeyAccountManagerServiceImpl implements KeyAccountManagerService {
   }
 
   private KeyAccountManagerEntity keyAccountManagerToEntityConversion(KeyAccountManager keyAccountManager) {
-    return KeyAccountManagerEntity.builder().keyAccountManagerID(keyAccountManager.getKeyAccountManagerID())
+    return KeyAccountManagerEntity.builder()
         .name(keyAccountManager.getName())
         .role(keyAccountManager.getRole())
         .contactInformation(keyAccountManager.getContactInformation())
@@ -60,7 +61,7 @@ public class KeyAccountManagerServiceImpl implements KeyAccountManagerService {
   }
 
   private KeyAccountManager entityToKeyAccountManagerConversion(KeyAccountManagerEntity keyAccountManagerEntity) {
-    return KeyAccountManager.builder().keyAccountManagerID(keyAccountManagerEntity.getKeyAccountManagerID())
+    return new KeyAccountManagerBuilder().keyAccountManagerID(keyAccountManagerEntity.getKeyAccountManagerID())
         .name(keyAccountManagerEntity.getName())
         .role(keyAccountManagerEntity.getRole())
         .contactInformation(keyAccountManagerEntity.getContactInformation())

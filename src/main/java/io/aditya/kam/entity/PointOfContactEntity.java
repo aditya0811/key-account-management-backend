@@ -1,6 +1,8 @@
 package io.aditya.kam.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -17,10 +19,10 @@ import lombok.NoArgsConstructor;
 @Table(name="PointOfContact")
 public class PointOfContactEntity {
 
-  //TODO With this poc id cannot be same for two different restaurant, this is bug!!, can be same
   @Id
-  String pointOfContactID;
-  String customerID;
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  Integer pointOfContactID;
+  Integer customerID;
   String name;
   String role;
 

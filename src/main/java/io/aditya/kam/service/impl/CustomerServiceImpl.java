@@ -10,6 +10,7 @@ import io.aditya.kam.service.CustomerService;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,8 +38,30 @@ public class CustomerServiceImpl implements CustomerService {
     return entityToCustomerConversion(customerEntity);
   }
 
+//  @Override
+//  public Customer update(Customer customer) {
+//
+//    CustomerEntity customerEntityFromDB =
+//        customerRepository.getReferenceById(customer.getCustomerID());
+//    Customer neww= new Customer();
+//
+//    BeanUtils.copyProperties(customer, neww);
+//    CustomerEntity customerEntityToUpdate = customerToEntityConversion(neww);
+//    customerRepository.save(customerEntityFromDB);
+//    return entityToCustomerConversion(customerEntityFromDB);
+//  }
+
   @Override
-  public Optional<Customer> findById(String id) {
+  public Customer update(Customer customer) {
+
+    CustomerEntity customerEntityToUpdate = customerToEntityConversion(customer);
+    customerEntityToUpdate.setCustomerID(customer.getCustomerID());
+    customerRepository.save(customerEntityToUpdate);
+    return entityToCustomerConversion(customerEntityToUpdate);
+  }
+
+  @Override
+  public Optional<Customer> findById(Integer id) {
     Optional<CustomerEntity> customerEntity
         = customerRepository.findById(id);
 
@@ -65,7 +88,7 @@ public class CustomerServiceImpl implements CustomerService {
 
   //ADd request validation, just after getting customer from presentation layer
   private CustomerEntity customerToEntityConversion(Customer customer) {
-    return CustomerEntity.builder().customerID(customer.getCustomerID())
+    return CustomerEntity.builder()
         .name(customer.getName())
         .address(customer.getAddress())
         .customerType(String.valueOf(customer.getCustomerType()))

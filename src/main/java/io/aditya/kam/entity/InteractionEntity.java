@@ -1,6 +1,8 @@
 package io.aditya.kam.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -19,14 +21,15 @@ public class InteractionEntity {
 
 
   @Id
-  String interactionID;
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  Integer interactionID;
   Integer keyAccountManagerID;
-  String customerID;
-  String pointOfContactID;
+  Integer customerID;
+  Integer pointOfContactID;
   Boolean isConverted;
   String interactionTimestamp;
   String audioLink;
-  String orderID;
+  Integer orderID;
   String interactionComment;
   Boolean isKeyAccountManagerChanged;
   Integer changedKeyAccountManagerID;

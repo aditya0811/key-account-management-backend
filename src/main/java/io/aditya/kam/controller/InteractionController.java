@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,18 +43,20 @@ public class InteractionController {
     this.pointOfContactService = pointOfContactService;
   }
 
-  @PutMapping(path="/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}/interactions/{interactionID}")
-  public ResponseEntity<Interaction> createInteraction(@PathVariable String interactionID,
-      @PathVariable String customerID,
+  @PostMapping(path="/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}/interactions")
+  public ResponseEntity<Interaction> createInteraction(@PathVariable Integer customerID,
       @PathVariable Integer keyAccountManagerID,
       @RequestBody final Interaction interaction) {
-    //TODO we maynot need this, if request body, does not have id, query parameter need to have id.
-    interaction.setInteractionID(interactionID);
     interaction.setCustomerID(customerID);
     interaction.setInteractionTimestamp(ApplicationUtils.getCurrentTimestamp());
     interaction.setKeyAccountManagerID(keyAccountManagerID);
-    //TODO add checks for .get
+
     Optional<Customer> foundCustomer = customerService.findById(customerID);
+    if (foundCustomer.isEmpty()) {
+      //TODO custom exception
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+    //TODO custom exception poc notfound
     interaction.setPointOfContactID(foundCustomer.get().getPointOfContactID());
 
     ApplicationUtils.updateCustomerAndOrder(interaction, customerService, customerOrderService,
@@ -64,11 +67,9 @@ public class InteractionController {
     // in 2nd transaction BUGG, maybe fetch last interaction for the customer(last call tracked will also help and then copy those details)
     return new ResponseEntity<>(savedInteraction, HttpStatus.CREATED);
   }
-  //TODO Non Restful, need to update this a) initial(first poc) (b) interaction (change in poc true, need to invoke endpoint, or just method will?)
-
 
   @GetMapping(path="/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}/interactions/{interactionID}")
-  public ResponseEntity<Interaction> retrieveInteraction(@PathVariable String interactionID,
+  public ResponseEntity<Interaction> retrieveInteraction(@PathVariable Integer interactionID,
       @PathVariable String customerID) {
     final Optional<Interaction> foundInteraction = interactionService.findById(interactionID);
     return foundInteraction
@@ -77,9 +78,8 @@ public class InteractionController {
   }
 
 
-  //TODO may need to route this to KAM, inject service
   @GetMapping(path = "/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}/interactions")
-  public ResponseEntity<List<Interaction>> listAllInteractionsForKeyAccountManager(@PathVariable String customerID) {
+  public ResponseEntity<List<Interaction>> listAllInteractionsForCustomer(@PathVariable Integer customerID) {
     List<Interaction> customerInteractions = interactionService
         .listInteractions()
         .stream()

@@ -8,6 +8,6 @@ import java.util.Optional;
 public interface InteractionService {
 
   Interaction create(Interaction interaction);
-  Optional<Interaction> findById(String id);
+  Optional<Interaction> findById(Integer id);
   List<Interaction> listInteractions();
 }

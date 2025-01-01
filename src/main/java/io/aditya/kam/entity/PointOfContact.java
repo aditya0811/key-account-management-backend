@@ -11,9 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class PointOfContact {
-  //Maybe change thi everywhere to id, to make this re-usable
-  String pointOfContactID;
-  String customerID;
+  Integer pointOfContactID;
+  Integer customerID;
   String name;
   String role;
 

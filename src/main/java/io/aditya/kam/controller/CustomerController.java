@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,26 +37,31 @@ public class CustomerController {
     this.pointOfContactService = pointOfContactService;
   }
 
+  @PostMapping(path="/v1/key-account-managers/{keyAccountManagerID}/customers")
+  public ResponseEntity<Customer> createCustomer(@PathVariable Integer keyAccountManagerID,
+      @RequestBody final Customer customer) {
+    customer.setKeyAccountManagerID(keyAccountManagerID);
+    final Customer savedCustomer = customerService.save(customer);
+    return new ResponseEntity<>(savedCustomer, HttpStatus.CREATED);
+  }
+
   @PutMapping(path="/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}")
-  public ResponseEntity<Customer> createAndUpdateCustomer(
-      @PathVariable String customerID,
+  public ResponseEntity<Customer> updateCustomer(
+      @PathVariable Integer customerID,
       @PathVariable Integer keyAccountManagerID,
       @RequestBody final Customer customer) {
-    //TODO we maynot need this, if request body, does not have id, query parameter need to have id.
-    customer.setCustomerID(customerID);
-    customer.setKeyAccountManagerID(keyAccountManagerID);
     //TODO only useful, if we are using this to update a customer, otherwise no need for if else
     final boolean isCustomerExists = customerService.isCustomerIDExists(customer);
-    final Customer savedCustomer = customerService.save(customer);
+    final Customer savedCustomer = customerService.update(customer);
     if (isCustomerExists) {
       return new ResponseEntity<>(savedCustomer, HttpStatus.OK);
     } else {
-      return new ResponseEntity<>(savedCustomer, HttpStatus.CREATED);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
   }
 
   @GetMapping(path="/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}")
-  public ResponseEntity<Customer> retrieveCustomer(@PathVariable String customerID) {
+  public ResponseEntity<Customer> retrieveCustomer(@PathVariable Integer customerID) {
     final Optional<Customer> foundCustomer = customerService.findById(customerID);
     return foundCustomer
         .map(customer -> new ResponseEntity<>(customer, HttpStatus.OK))
@@ -77,7 +83,7 @@ public class CustomerController {
   //TODO Non Restful, need to update this a) initial(first poc) (b) interaction (change in poc true, need to invoke endpoint, or just method will?)
   @PutMapping(path="/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}/update-point-of-contact")
   public ResponseEntity<Customer> updatePointOfContactID(
-      @PathVariable String customerID,
+      @PathVariable Integer customerID,
       @RequestBody final Customer customer) {
 
     Optional<Customer> customerFromDB = customerService.findById(customerID);
@@ -90,7 +96,7 @@ public class CustomerController {
       customerFromDB.get().setNextCallScheduledTimestamp(nextMeetingTimestamp);
 
 
-      final Customer savedCustomer = customerService.save(customerFromDB.get());
+      final Customer savedCustomer = customerService.update(customerFromDB.get());
       return new ResponseEntity<>(savedCustomer, HttpStatus.OK);
     } else {
       return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);

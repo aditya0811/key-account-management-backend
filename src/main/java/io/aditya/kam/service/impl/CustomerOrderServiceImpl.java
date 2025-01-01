@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CustomerOrderServiceImpl implements CustomerOrderService {
-  private final CustomerOrderRepository _customerOrderRepository;
+  private final CustomerOrderRepository customerOrderRepository;
 
   /**
    * Using a constructor based injection, as the variable is final, if we use setter based injection
@@ -22,28 +22,28 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
    */
   @Autowired
   public CustomerOrderServiceImpl(final CustomerOrderRepository customerOrderRepository) {
-    this._customerOrderRepository = customerOrderRepository;
+    this.customerOrderRepository = customerOrderRepository;
 
   }
 
   @Override
   public CustomerOrder create(CustomerOrder customerOrder) {
     CustomerOrderEntity customerOrderEntity =
-        _customerOrderRepository.save(orderToEntityConversion(customerOrder));
+        customerOrderRepository.save(orderToEntityConversion(customerOrder));
     return entityToOrderConversion(customerOrderEntity);
   }
 
   @Override
-  public Optional<CustomerOrder> findById(String id) {
+  public Optional<CustomerOrder> findById(Integer id) {
     Optional<CustomerOrderEntity> foundOrderEntity
-        = _customerOrderRepository.findById(String.valueOf(id));
+        = customerOrderRepository.findById(id);
 
     return foundOrderEntity.map(this::entityToOrderConversion);
   }
 
   @Override
   public List<CustomerOrder> listOrders() {
-    final List<CustomerOrderEntity> foundOrders = _customerOrderRepository.findAll();
+    final List<CustomerOrderEntity> foundOrders = customerOrderRepository.findAll();
     return foundOrders.stream()
         .map(this::entityToOrderConversion)
         .collect(Collectors.toList());

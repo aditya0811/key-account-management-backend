@@ -12,14 +12,14 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Interaction {
 
-  String interactionID;
+  Integer interactionID;
   Integer keyAccountManagerID;
-  String customerID;
-  String pointOfContactID;
+  Integer customerID;
+  Integer pointOfContactID;
   Boolean isConverted=false;
   String interactionTimestamp;
   String audioLink;
-  String orderID;
+  Integer orderID;
   String interactionComment;
   Boolean isKeyAccountManagerChanged=false;
   Integer changedKeyAccountManagerID;

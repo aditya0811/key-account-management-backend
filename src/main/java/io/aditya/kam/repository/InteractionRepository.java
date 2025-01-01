@@ -5,5 +5,5 @@ import io.aditya.kam.entity.InteractionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
-public interface InteractionRepository extends JpaRepository<InteractionEntity, String> {
+public interface InteractionRepository extends JpaRepository<InteractionEntity, Integer> {
 }

@@ -18,9 +18,9 @@ import lombok.NoArgsConstructor;
 public class CustomerOrderEntity {
 
   @Id
-  String orderID;
-  String customerID;
-  String interactionID;
+  Integer orderID;
+  Integer customerID;
+  Integer interactionID;
   Integer transactionValue;
 
 }

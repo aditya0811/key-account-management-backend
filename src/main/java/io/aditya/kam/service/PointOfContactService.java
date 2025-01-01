@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface PointOfContactService {
   PointOfContact create(PointOfContact pointOfContact);
-  Optional<PointOfContact> findById(String id);
+  Optional<PointOfContact> findById(Integer id);
   List<PointOfContact> listPointOfContacts();
 }

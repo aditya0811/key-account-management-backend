@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class Customer {
-  String customerID;
+  Integer customerID;
   String name;
   String address;
   CustomerType customerType;
@@ -21,7 +21,7 @@ public class Customer {
   Integer totalTransactionValue = 0;
   Integer keyAccountManagerID;
   String tags;
-  String pointOfContactID;
+  Integer pointOfContactID;
   LeadStatus leadStatus = LeadStatus.PROSPECTIVE;
   Integer frequencyOfCallsInDays = 10;
   String nextCallScheduledTimestamp;

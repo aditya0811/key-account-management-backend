@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CustomerOrder {
 
-  String orderID;
-  String customerID;
-  String interactionID;
+  Integer orderID;
+  Integer customerID;
+  Integer interactionID;
   Integer transactionValue;
 }

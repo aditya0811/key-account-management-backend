@@ -8,6 +8,6 @@ import java.util.Optional;
 public interface CustomerOrderService {
 
   CustomerOrder create(CustomerOrder customerOrder);
-  Optional<CustomerOrder> findById(String id);
+  Optional<CustomerOrder> findById(Integer id);
   List<CustomerOrder> listOrders();
 }

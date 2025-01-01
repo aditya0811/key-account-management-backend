@@ -1,5 +1,6 @@
 package io.aditya.kam;
 
+import io.aditya.kam.builder.KeyAccountManagerBuilder;
 import io.aditya.kam.entity.KeyAccountManager;
 import io.aditya.kam.entity.KeyAccountManagerEntity;
 
@@ -10,9 +11,7 @@ public class TestData {
   }
 
   public static KeyAccountManager getKeyAccountManager() {
-    return KeyAccountManager
-        .builder()
-        .keyAccountManagerID(1)
+    return new KeyAccountManagerBuilder()
         .name("Ramesh")
         .role("key-account-manager")
         .contactInformation("+91 9434434343")
@@ -23,7 +22,6 @@ public class TestData {
   public static KeyAccountManagerEntity getKeyAccountManagerEntity() {
     return KeyAccountManagerEntity
         .builder()
-        .keyAccountManagerID(1)
         .name("Ramesh")
         .role("key-account-manager")
         .contactInformation("+91 9434434343")

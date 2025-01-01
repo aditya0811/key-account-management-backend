@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
  * This is used to perform CRUD from the database.
  */
 @Repository
-public interface KeyAccountManagerRepository extends JpaRepository<KeyAccountManagerEntity, String> {
+public interface KeyAccountManagerRepository extends JpaRepository<KeyAccountManagerEntity, Integer> {
 }

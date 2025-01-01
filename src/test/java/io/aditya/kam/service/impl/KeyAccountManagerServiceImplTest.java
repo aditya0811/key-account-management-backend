@@ -42,7 +42,7 @@ public class KeyAccountManagerServiceImplTest {
   @Test
   public void testThatFindByIdReturnsEmptyWhenNoKeyAccountManager() {
 
-    Mockito.when(_keyAccountManagerRepository.findById(Mockito.eq("2")))
+    Mockito.when(_keyAccountManagerRepository.findById(Mockito.eq(2)))
         .thenReturn(Optional.empty());
     Optional<KeyAccountManager> result = _keyAccountManagerServiceImpl.findById(2);
     Assertions.assertEquals(Optional.empty(), result);
@@ -55,7 +55,7 @@ public class KeyAccountManagerServiceImplTest {
     KeyAccountManager keyAccountManager = TestData.getKeyAccountManager();
     KeyAccountManagerEntity keyAccountManagerEntity = TestData.getKeyAccountManagerEntity();
 
-    Mockito.when(_keyAccountManagerRepository.findById(Mockito.eq("1")))
+    Mockito.when(_keyAccountManagerRepository.findById(Mockito.eq(1)))
         .thenReturn(Optional.of(keyAccountManagerEntity));
 
     Optional<KeyAccountManager> result = _keyAccountManagerServiceImpl.findById(1);

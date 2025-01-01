@@ -35,9 +35,9 @@ public class InteractionServiceImpl implements InteractionService {
   }
 
   @Override
-  public Optional<Interaction> findById(String id) {
+  public Optional<Interaction> findById(Integer id) {
     Optional<InteractionEntity> foundInteractionEntity
-        = interactionRepository.findById(String.valueOf(id));
+        = interactionRepository.findById(id);
 
     return foundInteractionEntity.map(this::entityToInteractionConversion);
   }
@@ -51,7 +51,7 @@ public class InteractionServiceImpl implements InteractionService {
   }
 
   private InteractionEntity interactionToEntityConversion(Interaction interaction) {
-    return InteractionEntity.builder().interactionID(interaction.getInteractionID())
+    return InteractionEntity.builder()
         .keyAccountManagerID(interaction.getKeyAccountManagerID())
         .customerID(interaction.getCustomerID())
         .pointOfContactID(interaction.getPointOfContactID())

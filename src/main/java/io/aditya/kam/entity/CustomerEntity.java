@@ -1,6 +1,8 @@
 package io.aditya.kam.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -18,7 +20,8 @@ import lombok.NoArgsConstructor;
 public class CustomerEntity {
 
   @Id
-  String customerID;
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  Integer customerID;
   String name;
   String address;
   String customerType;
@@ -26,7 +29,7 @@ public class CustomerEntity {
   Integer totalTransactionValue;
   Integer keyAccountManagerID;
   String tags;
-  String pointOfContactID;
+  Integer pointOfContactID;
   String leadStatus;
   Integer frequencyOfCallsInDays;
   String nextCallScheduledTimestamp;

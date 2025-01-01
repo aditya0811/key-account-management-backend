@@ -25,8 +25,8 @@ public class CustomerOrderController {
   }
 
   @PutMapping(path="/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}/orders/{orderID}")
-  public ResponseEntity<CustomerOrder> createOrder(@PathVariable String orderID,
-      @PathVariable String customerID,
+  public ResponseEntity<CustomerOrder> createOrder(@PathVariable Integer orderID,
+      @PathVariable Integer customerID,
       @RequestBody final CustomerOrder customerOrder) {
     //TODO we maynot need this, if request body, does not have id, query parameter need to have id.
     customerOrder.setOrderID(orderID);
@@ -37,7 +37,7 @@ public class CustomerOrderController {
   }
 
   @GetMapping(path="/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}/orders/{orderID}")
-  public ResponseEntity<CustomerOrder> retrieveOrder(@PathVariable String orderID) {
+  public ResponseEntity<CustomerOrder> retrieveOrder(@PathVariable Integer orderID) {
     final Optional<CustomerOrder> foundOrder = customerOrderService.findById(orderID);
     return foundOrder
         .map(customerOrder -> new ResponseEntity<>(customerOrder, HttpStatus.OK))
@@ -45,7 +45,7 @@ public class CustomerOrderController {
   }
 
   @GetMapping(path = "/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}/orders")
-  public ResponseEntity<List<CustomerOrder>> listAllOrdersForCustomer(@PathVariable String customerID) {
+  public ResponseEntity<List<CustomerOrder>> listAllOrdersForCustomer(@PathVariable Integer customerID) {
     List<CustomerOrder> customerCustomerOrders = customerOrderService
         .listOrders()
         .stream()
