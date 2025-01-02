@@ -1,7 +1,8 @@
 package io.aditya.kam.controller;
 
 
-import io.aditya.kam.entity.Customer;
+import io.aditya.kam.comparator.customer.CustomerComparatorFactory;
+import io.aditya.kam.model.Customer;
 import io.aditya.kam.service.CustomerService;
 import io.aditya.kam.service.KeyAccountManagerService;
 import io.aditya.kam.service.PointOfContactService;
@@ -30,6 +31,9 @@ public class CustomerController {
   private final PointOfContactService pointOfContactService;
 
   @Autowired
+  private CustomerComparatorFactory _customerComparatorFactory;
+
+  @Autowired
   public CustomerController(CustomerService customerService, KeyAccountManagerService keyAccountManagerService,
       PointOfContactService pointOfContactService) {
     this.customerService = customerService;
@@ -56,6 +60,7 @@ public class CustomerController {
     if (isCustomerExists) {
       return new ResponseEntity<>(savedCustomer, HttpStatus.OK);
     } else {
+      //TODO Add exception
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
   }
@@ -69,7 +74,6 @@ public class CustomerController {
   }
 
 
-  //TODO may need to route this to KAM, inject service
   @GetMapping(path = "/v1/key-account-managers/{keyAccountManagerID}/customers")
   public ResponseEntity<List<Customer>> listAllCustomersForKeyAccountManager(@PathVariable Integer keyAccountManagerID) {
     List<Customer> keyAccountManagerCustomers = customerService
@@ -103,25 +107,34 @@ public class CustomerController {
     }
   }
 
-  //TODO may need to route this to KAM, inject service
+
+
   @GetMapping(path = "/v1/key-account-managers/{keyAccountManagerID}/customers/{metric}/{count}/{descending}")
   public ResponseEntity<List<Customer>> listAllCustomersForKeyAccountManagerForMetric(@PathVariable Integer keyAccountManagerID,
       @PathVariable String metric, @PathVariable int count, @PathVariable boolean descending) {
-    List<Customer> keyAccountManagerCustomers = new java.util.ArrayList<>(customerService.listCustomers().stream()
-        .filter(customer -> Objects.equals(customer.getKeyAccountManagerID(), keyAccountManagerID)).toList());
+    List<Customer> keyAccountManagerCustomers = new java.util.ArrayList<>(customerService
+        .listCustomers().stream()
+        .filter(customer -> Objects.equals(customer.getKeyAccountManagerID(), keyAccountManagerID))
+        .toList());
 
-    Collections.sort(keyAccountManagerCustomers, new Comparator<Customer>() {
-      @Override
-      public int compare(Customer a1, Customer a2) {
-        if (metric.equals("frequency")) {
-          return (a1.getNumberOfOrders() - a2.getNumberOfOrders()) * (descending ? -1 : 1);
-        } else {
-          return (a1.getTotalTransactionValue() - a2.getTotalTransactionValue()) * (descending ? -1 : 1);
-        }
-        //Add NOT FOUND METRIC ERROR HERE
-      }
-    });
-    int keyAccountManagerCustomersCount= keyAccountManagerCustomers.size();
+    Comparator<Customer> comparator = _customerComparatorFactory.getComparator(metric, descending);
+
+    Collections.sort(keyAccountManagerCustomers, comparator);
+    // TODO Keeping this for explanation, not exactly factory design, since we did not bring any abstraction, and creating class.
+    // However we have reduced the responsibility here, although factory still needs to be modified, but without touching this class
+
+//    Collections.sort(keyAccountManagerCustomers, new Comparator<Customer>() {
+//      @Override
+//      public int compare(Customer a1, Customer a2) {
+//        if (metric.equals("frequency")) {
+//          return (a1.getNumberOfOrders() - a2.getNumberOfOrders()) * (descending ? -1 : 1);
+//        } else {
+//          return (a1.getTotalTransactionValue() - a2.getTotalTransactionValue()) * (descending ? -1 : 1);
+//        }
+//        //Add NOT FOUND METRIC ERROR HERE
+//      }
+//    });
+    int keyAccountManagerCustomersCount = keyAccountManagerCustomers.size();
     return new ResponseEntity<List<Customer>>(keyAccountManagerCustomers.subList(0,
         Math.min(count,keyAccountManagerCustomersCount)), HttpStatus.OK);
   }

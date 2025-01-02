@@ -1,7 +1,6 @@
 package io.aditya.kam.service;
 
-import io.aditya.kam.entity.Customer;
-import io.aditya.kam.entity.KeyAccountManager;
+import io.aditya.kam.model.Customer;
 import java.util.List;
 import java.util.Optional;
 

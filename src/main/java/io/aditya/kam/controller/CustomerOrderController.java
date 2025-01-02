@@ -1,6 +1,6 @@
 package io.aditya.kam.controller;
 
-import io.aditya.kam.entity.CustomerOrder;
+import io.aditya.kam.model.CustomerOrder;
 import io.aditya.kam.service.CustomerOrderService;
 import java.util.List;
 import java.util.Objects;
@@ -28,7 +28,6 @@ public class CustomerOrderController {
   public ResponseEntity<CustomerOrder> createOrder(@PathVariable Integer orderID,
       @PathVariable Integer customerID,
       @RequestBody final CustomerOrder customerOrder) {
-    //TODO we maynot need this, if request body, does not have id, query parameter need to have id.
     customerOrder.setOrderID(orderID);
     customerOrder.setCustomerID(customerID);
 

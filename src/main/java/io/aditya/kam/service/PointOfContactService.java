@@ -1,6 +1,6 @@
 package io.aditya.kam.service;
 
-import io.aditya.kam.entity.PointOfContact;
+import io.aditya.kam.model.PointOfContact;
 import java.util.List;
 import java.util.Optional;
 

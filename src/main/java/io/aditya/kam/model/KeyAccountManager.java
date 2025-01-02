@@ -1,4 +1,4 @@
-package io.aditya.kam.entity;
+package io.aditya.kam.model;
 
 import io.aditya.kam.builder.KeyAccountManagerBuilder;
 import lombok.AllArgsConstructor;

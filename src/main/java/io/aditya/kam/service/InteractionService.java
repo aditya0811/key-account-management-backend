@@ -1,6 +1,6 @@
 package io.aditya.kam.service;
 
-import io.aditya.kam.entity.Interaction;
+import io.aditya.kam.model.Interaction;
 import java.util.List;
 import java.util.Optional;
 

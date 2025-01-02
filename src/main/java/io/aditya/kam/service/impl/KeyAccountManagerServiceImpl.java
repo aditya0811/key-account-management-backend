@@ -1,7 +1,8 @@
 package io.aditya.kam.service.impl;
 
 import io.aditya.kam.builder.KeyAccountManagerBuilder;
-import io.aditya.kam.entity.KeyAccountManager;
+import io.aditya.kam.convertor.KeyAccountManagerConvertor;
+import io.aditya.kam.model.KeyAccountManager;
 import io.aditya.kam.entity.KeyAccountManagerEntity;
 import io.aditya.kam.repository.KeyAccountManagerRepository;
 import io.aditya.kam.service.KeyAccountManagerService;
@@ -17,22 +18,26 @@ public class KeyAccountManagerServiceImpl implements KeyAccountManagerService {
 
   private final KeyAccountManagerRepository keyAccountManagerRepository;
 
+
+  private final KeyAccountManagerConvertor keyAccountManagerConvertor;
+
   /**
-   * Using a constructor based injection, as the variable is final, if we use setter based injection
-   * the repository variable is not final
+   * Using a constructor based injection
    * @param keyAccountManagerRepository
    */
   @Autowired
-  public KeyAccountManagerServiceImpl(final KeyAccountManagerRepository keyAccountManagerRepository) {
+  public KeyAccountManagerServiceImpl(final KeyAccountManagerRepository keyAccountManagerRepository,
+      final  KeyAccountManagerConvertor keyAccountManagerConvertor) {
     this.keyAccountManagerRepository = keyAccountManagerRepository;
+    this.keyAccountManagerConvertor = keyAccountManagerConvertor;
 
   }
 
   @Override
   public KeyAccountManager create(KeyAccountManager keyAccountManager) {
     KeyAccountManagerEntity keyAccountManagerEntity =
-        keyAccountManagerRepository.save(keyAccountManagerToEntityConversion(keyAccountManager));
-    return entityToKeyAccountManagerConversion(keyAccountManagerEntity);
+        keyAccountManagerRepository.save(keyAccountManagerConvertor.toEntity(keyAccountManager));
+    return keyAccountManagerConvertor.toModel(keyAccountManagerEntity);
   }
 
   @Override
@@ -40,32 +45,17 @@ public class KeyAccountManagerServiceImpl implements KeyAccountManagerService {
     Optional<KeyAccountManagerEntity> foundKeyAccountManagerEntity
         = keyAccountManagerRepository.findById(id);
 
-    return foundKeyAccountManagerEntity.map(this::entityToKeyAccountManagerConversion);
+    return foundKeyAccountManagerEntity.map(keyAccountManagerEntity
+        -> keyAccountManagerConvertor.toModel(keyAccountManagerEntity));
   }
 
   @Override
   public List<KeyAccountManager> listKeyAccountManagers() {
     final List<KeyAccountManagerEntity> foundKeyAccountManagers = keyAccountManagerRepository.findAll();
     return foundKeyAccountManagers.stream()
-        .map(this::entityToKeyAccountManagerConversion)
+        .map(keyAccountManagerEntity
+            -> keyAccountManagerConvertor.toModel(keyAccountManagerEntity))
         .collect(Collectors.toList());
   }
 
-  private KeyAccountManagerEntity keyAccountManagerToEntityConversion(KeyAccountManager keyAccountManager) {
-    return KeyAccountManagerEntity.builder()
-        .name(keyAccountManager.getName())
-        .role(keyAccountManager.getRole())
-        .contactInformation(keyAccountManager.getContactInformation())
-        .workingHours(keyAccountManager.getWorkingHours())
-        .build();
-  }
-
-  private KeyAccountManager entityToKeyAccountManagerConversion(KeyAccountManagerEntity keyAccountManagerEntity) {
-    return new KeyAccountManagerBuilder().keyAccountManagerID(keyAccountManagerEntity.getKeyAccountManagerID())
-        .name(keyAccountManagerEntity.getName())
-        .role(keyAccountManagerEntity.getRole())
-        .contactInformation(keyAccountManagerEntity.getContactInformation())
-        .workingHours(keyAccountManagerEntity.getWorkingHours())
-        .build();
-  }
 }

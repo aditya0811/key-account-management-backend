@@ -2,7 +2,7 @@ package io.aditya.kam.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.aditya.kam.TestData;
-import io.aditya.kam.entity.KeyAccountManager;
+import io.aditya.kam.model.KeyAccountManager;
 import io.aditya.kam.service.KeyAccountManagerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,7 +1,6 @@
 package io.aditya.kam.controller;
 
-import io.aditya.kam.builder.KeyAccountManagerBuilder;
-import io.aditya.kam.entity.KeyAccountManager;
+import io.aditya.kam.model.KeyAccountManager;
 import io.aditya.kam.service.KeyAccountManagerService;
 import java.util.List;
 import java.util.Optional;
@@ -11,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 

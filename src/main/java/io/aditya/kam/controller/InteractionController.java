@@ -1,7 +1,7 @@
 package io.aditya.kam.controller;
 
-import io.aditya.kam.entity.Customer;
-import io.aditya.kam.entity.Interaction;
+import io.aditya.kam.model.Customer;
+import io.aditya.kam.model.Interaction;
 import io.aditya.kam.service.CustomerService;
 import io.aditya.kam.service.InteractionService;
 import io.aditya.kam.service.CustomerOrderService;
@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 

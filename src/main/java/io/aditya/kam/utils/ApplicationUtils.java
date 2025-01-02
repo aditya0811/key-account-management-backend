@@ -1,8 +1,8 @@
 package io.aditya.kam.utils;
 
-import io.aditya.kam.entity.Customer;
-import io.aditya.kam.entity.CustomerOrder;
-import io.aditya.kam.entity.Interaction;
+import io.aditya.kam.model.Customer;
+import io.aditya.kam.model.CustomerOrder;
+import io.aditya.kam.model.Interaction;
 import io.aditya.kam.enums.LeadStatus;
 import io.aditya.kam.service.CustomerOrderService;
 import io.aditya.kam.service.CustomerService;
@@ -11,7 +11,6 @@ import io.aditya.kam.service.PointOfContactService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.TimeZone;
 

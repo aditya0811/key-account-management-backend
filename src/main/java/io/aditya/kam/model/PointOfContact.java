@@ -1,4 +1,4 @@
-package io.aditya.kam.entity;
+package io.aditya.kam.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

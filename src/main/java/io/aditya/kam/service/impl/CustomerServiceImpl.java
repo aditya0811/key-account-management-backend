@@ -1,16 +1,14 @@
 package io.aditya.kam.service.impl;
 
-import io.aditya.kam.entity.Customer;
+import io.aditya.kam.convertor.CustomerConvertor;
+import io.aditya.kam.model.Customer;
 import io.aditya.kam.entity.CustomerEntity;
-import io.aditya.kam.enums.CustomerType;
-import io.aditya.kam.enums.LeadStatus;
 import io.aditya.kam.repository.CustomerRepository;
 import io.aditya.kam.service.CustomerService;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +18,11 @@ public class CustomerServiceImpl implements CustomerService {
 
   private final CustomerRepository customerRepository;
 
+  @Autowired
+  private CustomerConvertor customerConvertor;
+
   /**
-   * Using a constructor based injection, as the variable is final, if we use setter based injection
-   * the repository variable is not final
+   * Using a constructor based injection
    * @param customerRepository customerRepository
    */
   @Autowired
@@ -34,38 +34,25 @@ public class CustomerServiceImpl implements CustomerService {
   @Override
   public Customer save(Customer customer) {
     CustomerEntity customerEntity =
-        customerRepository.save(customerToEntityConversion(customer));
-    return entityToCustomerConversion(customerEntity);
+        customerRepository.save(customerConvertor.toEntity(customer));
+    return customerConvertor.toModel(customerEntity);
   }
-
-//  @Override
-//  public Customer update(Customer customer) {
-//
-//    CustomerEntity customerEntityFromDB =
-//        customerRepository.getReferenceById(customer.getCustomerID());
-//    Customer neww= new Customer();
-//
-//    BeanUtils.copyProperties(customer, neww);
-//    CustomerEntity customerEntityToUpdate = customerToEntityConversion(neww);
-//    customerRepository.save(customerEntityFromDB);
-//    return entityToCustomerConversion(customerEntityFromDB);
-//  }
 
   @Override
   public Customer update(Customer customer) {
 
-    CustomerEntity customerEntityToUpdate = customerToEntityConversion(customer);
+    CustomerEntity customerEntityToUpdate = customerConvertor.toEntity(customer);
     customerEntityToUpdate.setCustomerID(customer.getCustomerID());
     customerRepository.save(customerEntityToUpdate);
-    return entityToCustomerConversion(customerEntityToUpdate);
+
+    return customerConvertor.toModel(customerEntityToUpdate);
   }
 
   @Override
   public Optional<Customer> findById(Integer id) {
-    Optional<CustomerEntity> customerEntity
+    Optional<CustomerEntity> foundCustomerEntity
         = customerRepository.findById(id);
-
-    return customerEntity.map(this::entityToCustomerConversion);
+    return foundCustomerEntity.map(customerEntity -> customerConvertor.toModel(customerEntity));
   }
 
 
@@ -74,7 +61,7 @@ public class CustomerServiceImpl implements CustomerService {
   public List<Customer> listCustomers() {
     final List<CustomerEntity> foundCustomers = customerRepository.findAll();
     return foundCustomers.stream()
-        .map(this::entityToCustomerConversion)
+        .map(customerEntity -> customerConvertor.toModel(customerEntity))
         .collect(Collectors.toList());
   }
 
@@ -83,41 +70,5 @@ public class CustomerServiceImpl implements CustomerService {
   @Override
   public boolean isCustomerIDExists(Customer customer) {
     return customerRepository.existsById(customer.getCustomerID());
-  }
-
-
-  //ADd request validation, just after getting customer from presentation layer
-  private CustomerEntity customerToEntityConversion(Customer customer) {
-    return CustomerEntity.builder()
-        .name(customer.getName())
-        .address(customer.getAddress())
-        .customerType(String.valueOf(customer.getCustomerType()))
-        .numberOfOrders(customer.getNumberOfOrders())
-        .totalTransactionValue(customer.getTotalTransactionValue())
-        .keyAccountManagerID(customer.getKeyAccountManagerID())
-        .tags(customer.getTags())
-        .pointOfContactID(customer.getPointOfContactID())
-        .leadStatus(String.valueOf(customer.getLeadStatus()))
-        .frequencyOfCallsInDays(customer.getFrequencyOfCallsInDays())
-        .nextCallScheduledTimestamp(customer.getNextCallScheduledTimestamp())
-        .lastCallScheduledTimestamp(customer.getLastCallScheduledTimestamp())
-        .build();
-  }
-
-  private Customer entityToCustomerConversion(CustomerEntity customerEntity) {
-    return Customer.builder().customerID(customerEntity.getCustomerID())
-        .name(customerEntity.getName())
-        .address(customerEntity.getAddress())
-        .customerType(CustomerType.valueOf(customerEntity.getCustomerType()))
-        .numberOfOrders(customerEntity.getNumberOfOrders())
-        .totalTransactionValue(customerEntity.getTotalTransactionValue())
-        .keyAccountManagerID(customerEntity.getKeyAccountManagerID())
-        .tags(customerEntity.getTags())
-        .pointOfContactID(customerEntity.getPointOfContactID())
-        .leadStatus(LeadStatus.valueOf(customerEntity.getLeadStatus()))
-        .frequencyOfCallsInDays(customerEntity.getFrequencyOfCallsInDays())
-        .nextCallScheduledTimestamp(customerEntity.getNextCallScheduledTimestamp())
-        .lastCallScheduledTimestamp(customerEntity.getLastCallScheduledTimestamp())
-        .build();
   }
 }
