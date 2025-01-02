@@ -2,6 +2,7 @@ package io.aditya.kam.controller;
 
 import io.aditya.kam.model.KeyAccountManager;
 import io.aditya.kam.service.KeyAccountManagerService;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,9 @@ public class KeyAccountManagerController {
 
   @PostMapping(path="/v1/key-account-managers")
   public ResponseEntity<KeyAccountManager> createKeyAccountManager(
-      @RequestBody final KeyAccountManager keyAccountManager) {
+      @RequestBody @Valid final KeyAccountManager keyAccountManager) {
     final KeyAccountManager savedKeyAccountManager = keyAccountManagerService.create(keyAccountManager);
+
     ResponseEntity<KeyAccountManager> response =
         new ResponseEntity<>(savedKeyAccountManager, HttpStatus.CREATED);
     return response;
