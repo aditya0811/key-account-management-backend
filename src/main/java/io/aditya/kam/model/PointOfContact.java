@@ -3,23 +3,19 @@ package io.aditya.kam.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class PointOfContact {
+@SuperBuilder
+public class PointOfContact extends Employee {
   Integer pointOfContactID;
   Integer customerID;
-  String name;
-  String role;
-
-  //Should have country code
-  String contactInformation;
-
-  String workingHours;
 
 }
 

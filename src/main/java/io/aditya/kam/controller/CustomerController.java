@@ -2,6 +2,7 @@ package io.aditya.kam.controller;
 
 
 import io.aditya.kam.comparator.customer.CustomerComparatorFactory;
+import io.aditya.kam.exception.CustomerNotFoundException;
 import io.aditya.kam.model.Customer;
 import io.aditya.kam.service.CustomerService;
 import io.aditya.kam.service.KeyAccountManagerService;
@@ -31,7 +32,7 @@ public class CustomerController {
   private final PointOfContactService pointOfContactService;
 
   @Autowired
-  private CustomerComparatorFactory _customerComparatorFactory;
+  private CustomerComparatorFactory customerComparatorFactory;
 
   @Autowired
   public CustomerController(CustomerService customerService, KeyAccountManagerService keyAccountManagerService,
@@ -50,18 +51,15 @@ public class CustomerController {
   }
 
   @PutMapping(path="/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}")
-  public ResponseEntity<Customer> updateCustomer(
-      @PathVariable Integer customerID,
+  public ResponseEntity<Customer> updateCustomer (@PathVariable Integer customerID,
       @PathVariable Integer keyAccountManagerID,
-      @RequestBody final Customer customer) {
-    //TODO only useful, if we are using this to update a customer, otherwise no need for if else
+      @RequestBody final Customer customer) throws CustomerNotFoundException {
     final boolean isCustomerExists = customerService.isCustomerIDExists(customer);
     final Customer savedCustomer = customerService.update(customer);
     if (isCustomerExists) {
       return new ResponseEntity<>(savedCustomer, HttpStatus.OK);
     } else {
-      //TODO Add exception
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+      throw new CustomerNotFoundException("Customer does not exists");
     }
   }
 
@@ -88,7 +86,7 @@ public class CustomerController {
   @PutMapping(path="/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}/update-point-of-contact")
   public ResponseEntity<Customer> updatePointOfContactID(
       @PathVariable Integer customerID,
-      @RequestBody final Customer customer) {
+      @RequestBody final Customer customer) throws CustomerNotFoundException{
 
     Optional<Customer> customerFromDB = customerService.findById(customerID);
     if (customerFromDB.isPresent()) {
@@ -103,7 +101,7 @@ public class CustomerController {
       final Customer savedCustomer = customerService.update(customerFromDB.get());
       return new ResponseEntity<>(savedCustomer, HttpStatus.OK);
     } else {
-      return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
+      throw new CustomerNotFoundException("Customer does not exists");
     }
   }
 
@@ -117,7 +115,7 @@ public class CustomerController {
         .filter(customer -> Objects.equals(customer.getKeyAccountManagerID(), keyAccountManagerID))
         .toList());
 
-    Comparator<Customer> comparator = _customerComparatorFactory.getComparator(metric, descending);
+    Comparator<Customer> comparator = customerComparatorFactory.getComparator(metric, descending);
 
     Collections.sort(keyAccountManagerCustomers, comparator);
     // TODO Keeping this for explanation, not exactly factory design, since we did not bring any abstraction, and creating class.

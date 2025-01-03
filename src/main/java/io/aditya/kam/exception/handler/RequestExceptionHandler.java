@@ -1,5 +1,6 @@
 package io.aditya.kam.exception.handler;
 
+import io.aditya.kam.exception.CustomerNotFoundException;
 import io.aditya.kam.exception.PointOfContactNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +26,15 @@ public class RequestExceptionHandler {
 
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   @ExceptionHandler(PointOfContactNotFoundException.class)
-  public Map<String,String> handleInvalidPointOfContact(PointOfContactNotFoundException ex) {
+  public Map<String,String> handlePointOfContactNotFound(PointOfContactNotFoundException ex) {
+    Map<String, String> errorMap = new HashMap<>();
+    errorMap.put("message", ex.getMessage());
+    return errorMap;
+  }
+
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+  @ExceptionHandler(CustomerNotFoundException.class)
+  public Map<String,String> handleCustomerNotFound(CustomerNotFoundException ex) {
     Map<String, String> errorMap = new HashMap<>();
     errorMap.put("message", ex.getMessage());
     return errorMap;

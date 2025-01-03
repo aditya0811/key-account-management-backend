@@ -1,5 +1,6 @@
 package io.aditya.kam.controller;
 
+import io.aditya.kam.exception.CustomerNotFoundException;
 import io.aditya.kam.exception.PointOfContactNotFoundException;
 import io.aditya.kam.model.Customer;
 import io.aditya.kam.model.Interaction;
@@ -46,15 +47,14 @@ public class InteractionController {
   @PostMapping(path="/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}/interactions")
   public ResponseEntity<Interaction> createInteraction(@PathVariable Integer customerID,
       @PathVariable Integer keyAccountManagerID,
-      @RequestBody final Interaction interaction ) throws PointOfContactNotFoundException {
+      @RequestBody final Interaction interaction ) throws PointOfContactNotFoundException, CustomerNotFoundException {
     interaction.setCustomerID(customerID);
     interaction.setInteractionTimestamp(ApplicationUtils.getCurrentTimestamp());
     interaction.setKeyAccountManagerID(keyAccountManagerID);
 
     Optional<Customer> foundCustomer = customerService.findById(customerID);
     if (foundCustomer.isEmpty()) {
-      //TODO custom exception
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+     throw new CustomerNotFoundException("Customer does not exists");
     }
     if (foundCustomer.get().getPointOfContactID() == null) {
       throw new PointOfContactNotFoundException("Point of contact does not exists for this customer");
@@ -89,6 +89,5 @@ public class InteractionController {
         .toList();
     return new ResponseEntity<List<Interaction>>(customerInteractions, HttpStatus.OK);
   }
-
 
 }

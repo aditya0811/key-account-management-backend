@@ -25,5 +25,7 @@ public class PointOfContactConvertor {
         .workingHours(pointOfContactEntity.getWorkingHours())
         .customerID(pointOfContactEntity.getCustomerID())
         .build();
+
+
   }
 }

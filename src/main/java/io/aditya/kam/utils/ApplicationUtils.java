@@ -177,7 +177,12 @@ public class ApplicationUtils {
 
       //last call is updated with current call
 
-      customer.setLastCallScheduledTimestamp(customer.getNextCallScheduledTimestamp());
+      StringBuilder temp = new StringBuilder();
+      for(char ch:customer.getNextCallScheduledTimestamp().toCharArray() ) {
+        temp.append(ch);
+      }
+
+      customer.setLastCallScheduledTimestamp(temp.toString());
       String nextMeetingTimestamp = ApplicationUtils.getDateWithFrequencyOfCalls(keyAccountManagerService,
           pointOfContactService, customer);
       customer.setNextCallScheduledTimestamp(nextMeetingTimestamp);
