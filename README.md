@@ -5,7 +5,8 @@
 
 ### Backend
 <p align="left">
- <img alt="Java" src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white"/> <img alt="Springboot" src="https://img.shields.io/badge/SpringBoot-6DB33F?style=flat-square&logo=Spring&logoColor=white"/> 
+ <img alt="Java" src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white"/>
+ <img alt="Springboot" src="https://img.shields.io/badge/SpringBoot-6DB33F?style=flat-square&logo=Spring&logoColor=white"/> 
 </p>
 
 ### Database
@@ -21,7 +22,8 @@ Built a Key account management system with the following features
 <li>Adding customers(like restaurants leads) for key account manager</li> 
 <li>Adding multiple point of contact for a customer and updating point of contact for the customer and key account manager</li> 
 <li>Adding interactions(calls/offline discussion) between point of contact and key account manager</li>  
-  <li> ll</li>
+  - lol
+  - lol2
 <li>Adding order details corresponding to an interaction</li> 
 <li>Listing interactions scheduled today for a given key account manager</li> 
 <li>Listing interactions scheduled today for a given key account manager</li>
