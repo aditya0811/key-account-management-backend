@@ -69,8 +69,9 @@ mvn spring-boot:run
 ```
 
 ## Database schema
-<img src="![image](https://github.com/user-attachments/assets/595831ba-871a-47d4-86f6-841f1174ca78)
-" alt="DB SCHEMA" align="center">
+<img src="https://github.com/user-attachments/assets/595831ba-871a-47d4-86f6-841f1174ca78" alt="DB SCHEMA" align="center">
+
+
 
  ## API Endpoints
  Following are the api endpoints for this app.
