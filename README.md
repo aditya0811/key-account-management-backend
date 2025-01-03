@@ -5,7 +5,7 @@
 
 ### Backend
 <p align="left">
- <img alt="Java" src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white"/>
+ <img alt="Java" src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white"/></br>
  <img alt="Springboot" src="https://img.shields.io/badge/SpringBoot-6DB33F?style=flat-square&logo=Spring&logoColor=white"/> 
 </p>
 
@@ -29,20 +29,26 @@ Built a Key account management system with the following features
 <li>Listing interactions scheduled today for a given key account manager</li>
 <li>Upda</li> 
 <li>Listing top X (high performing) and bottom X(underperforming) customers for a praticular key account manager on the basis of total transaction value</li> 
+<li>Swagger is accessible via browser and api both  </li>
 </ol>
 
 ## Getting started 
 
 
 ### Pre-requisite
-Need to install Maven(3.8.8) and Java(22)
 
+Need to install 
+```
+Maven(3.8.8)
+Java(22)
+```
+### Building
 Use below code to built project
 ```
 mvn clean install
 ```
 
-## Testing
+### Testing
 ```
 mvn test
 ```
@@ -55,8 +61,6 @@ mvn spring-boot:run
 
 ## Database schema
 <img src="https://github.com/user-attachments/assets/574d4057-5ba7-4657-9f2c-133579c87588" alt="DB SCHEMA" align="center">
-
-
 
  ## API Endpoints
  Following are the api endpoints for this app.
