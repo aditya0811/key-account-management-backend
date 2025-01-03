@@ -1,7 +1,7 @@
 package io.aditya.kam;
 
 import io.aditya.kam.builder.KeyAccountManagerBuilder;
-import io.aditya.kam.model.KeyAccountManager;
+import io.aditya.kam.dto.KeyAccountManager;
 import io.aditya.kam.entity.KeyAccountManagerEntity;
 
 

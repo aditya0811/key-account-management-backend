@@ -2,8 +2,7 @@ package io.aditya.kam.convertor;
 
 import io.aditya.kam.builder.KeyAccountManagerBuilder;
 import io.aditya.kam.entity.KeyAccountManagerEntity;
-import io.aditya.kam.model.KeyAccountManager;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.aditya.kam.dto.KeyAccountManager;
 import org.springframework.stereotype.Service;
 
 

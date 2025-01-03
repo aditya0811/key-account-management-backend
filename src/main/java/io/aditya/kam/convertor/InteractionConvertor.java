@@ -1,7 +1,7 @@
 package io.aditya.kam.convertor;
 
 import io.aditya.kam.entity.InteractionEntity;
-import io.aditya.kam.model.Interaction;
+import io.aditya.kam.dto.Interaction;
 import org.springframework.stereotype.Service;
 
 
@@ -19,14 +19,12 @@ public class InteractionConvertor {
         .interactionComment(interaction.getInteractionComment())
         .isKeyAccountManagerChanged(interaction.getIsKeyAccountManagerChanged())
         .changedKeyAccountManagerID(interaction.getChangedKeyAccountManagerID())
-        .isPointOfContactChanged(interaction.getIsPointOfContactChanged())
-        .changedPointOfContactID(interaction.getChangedPointOfContactID())
         .isOrderPlaced(interaction.getIsOrderPlaced())
         .transactionValue(interaction.getTransactionValue())
         .build();
   }
 
-  public Interaction toModel(InteractionEntity interactionEntity) {
+  public Interaction toDTO(InteractionEntity interactionEntity) {
     return Interaction.builder().interactionID(interactionEntity.getInteractionID())
         .keyAccountManagerID(interactionEntity.getKeyAccountManagerID())
         .customerID(interactionEntity.getCustomerID())
@@ -38,8 +36,6 @@ public class InteractionConvertor {
         .interactionComment(interactionEntity.getInteractionComment())
         .isKeyAccountManagerChanged(interactionEntity.getIsKeyAccountManagerChanged())
         .changedKeyAccountManagerID(interactionEntity.getChangedKeyAccountManagerID())
-        .isPointOfContactChanged(interactionEntity.getIsPointOfContactChanged())
-        .changedPointOfContactID(interactionEntity.getChangedPointOfContactID())
         .isOrderPlaced(interactionEntity.getIsOrderPlaced())
         .transactionValue(interactionEntity.getTransactionValue())
         .build();

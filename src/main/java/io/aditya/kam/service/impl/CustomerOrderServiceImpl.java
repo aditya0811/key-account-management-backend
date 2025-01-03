@@ -1,7 +1,7 @@
 package io.aditya.kam.service.impl;
 
 import io.aditya.kam.convertor.CustomerOrderConvertor;
-import io.aditya.kam.model.CustomerOrder;
+import io.aditya.kam.dto.CustomerOrder;
 import io.aditya.kam.entity.CustomerOrderEntity;
 import io.aditya.kam.repository.CustomerOrderRepository;
 import io.aditya.kam.service.CustomerOrderService;
@@ -33,7 +33,7 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
   public CustomerOrder create(CustomerOrder customerOrder) {
     CustomerOrderEntity customerOrderEntity =
         customerOrderRepository.save(customerOrderConvertor.toEntity(customerOrder));
-    return customerOrderConvertor.toModel(customerOrderEntity);
+    return customerOrderConvertor.toDTO(customerOrderEntity);
   }
 
   @Override
@@ -41,14 +41,14 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
     Optional<CustomerOrderEntity> foundOrderEntity
         = customerOrderRepository.findById(id);
 
-    return foundOrderEntity.map(orderEntity -> customerOrderConvertor.toModel(orderEntity));
+    return foundOrderEntity.map(orderEntity -> customerOrderConvertor.toDTO(orderEntity));
   }
 
   @Override
   public List<CustomerOrder> listOrders() {
     final List<CustomerOrderEntity> foundOrders = customerOrderRepository.findAll();
     return foundOrders.stream()
-        .map(orderEntity -> customerOrderConvertor.toModel(orderEntity))
+        .map(orderEntity -> customerOrderConvertor.toDTO(orderEntity))
         .collect(Collectors.toList());
   }
 

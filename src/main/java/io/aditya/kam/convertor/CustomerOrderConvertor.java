@@ -1,7 +1,7 @@
 package io.aditya.kam.convertor;
 
 import io.aditya.kam.entity.CustomerOrderEntity;
-import io.aditya.kam.model.CustomerOrder;
+import io.aditya.kam.dto.CustomerOrder;
 import org.springframework.stereotype.Service;
 
 
@@ -16,7 +16,7 @@ public class CustomerOrderConvertor {
         .build();
   }
 
-  public CustomerOrder toModel(CustomerOrderEntity customerOrderEntity) {
+  public CustomerOrder toDTO(CustomerOrderEntity customerOrderEntity) {
     return CustomerOrder.builder()
         .orderID(customerOrderEntity.getOrderID())
         .interactionID(customerOrderEntity.getInteractionID())

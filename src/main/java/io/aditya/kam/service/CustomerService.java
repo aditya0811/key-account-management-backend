@@ -1,6 +1,6 @@
 package io.aditya.kam.service;
 
-import io.aditya.kam.model.Customer;
+import io.aditya.kam.dto.Customer;
 import java.util.List;
 import java.util.Optional;
 

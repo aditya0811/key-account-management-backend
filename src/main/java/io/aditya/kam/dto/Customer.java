@@ -1,4 +1,4 @@
-package io.aditya.kam.model;
+package io.aditya.kam.dto;
 
 import io.aditya.kam.enums.CustomerType;
 import io.aditya.kam.enums.LeadStatus;

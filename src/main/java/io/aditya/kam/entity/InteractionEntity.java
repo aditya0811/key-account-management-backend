@@ -33,8 +33,6 @@ public class InteractionEntity {
   String interactionComment;
   Boolean isKeyAccountManagerChanged;
   Integer changedKeyAccountManagerID;
-  Boolean isPointOfContactChanged;
-  Integer changedPointOfContactID;
   Boolean isOrderPlaced;
   Integer transactionValue;
 }

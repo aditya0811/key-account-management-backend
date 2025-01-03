@@ -1,7 +1,7 @@
 package io.aditya.kam.service.impl;
 
 import io.aditya.kam.convertor.KeyAccountManagerConvertor;
-import io.aditya.kam.model.KeyAccountManager;
+import io.aditya.kam.dto.KeyAccountManager;
 import io.aditya.kam.entity.KeyAccountManagerEntity;
 import io.aditya.kam.repository.KeyAccountManagerRepository;
 import io.aditya.kam.service.KeyAccountManagerService;

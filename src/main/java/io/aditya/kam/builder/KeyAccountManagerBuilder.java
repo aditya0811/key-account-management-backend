@@ -1,6 +1,6 @@
 package io.aditya.kam.builder;
 
-import io.aditya.kam.model.KeyAccountManager;
+import io.aditya.kam.dto.KeyAccountManager;
 public class KeyAccountManagerBuilder {
   private Integer keyAccountManagerID;
   private String name;

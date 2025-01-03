@@ -1,7 +1,7 @@
 package io.aditya.kam.service.impl;
 
 import io.aditya.kam.convertor.CustomerConvertor;
-import io.aditya.kam.model.Customer;
+import io.aditya.kam.dto.Customer;
 import io.aditya.kam.entity.CustomerEntity;
 import io.aditya.kam.repository.CustomerRepository;
 import io.aditya.kam.service.CustomerService;
@@ -35,7 +35,7 @@ public class CustomerServiceImpl implements CustomerService {
   public Customer save(Customer customer) {
     CustomerEntity customerEntity =
         customerRepository.save(customerConvertor.toEntity(customer));
-    return customerConvertor.toModel(customerEntity);
+    return customerConvertor.toDTO(customerEntity);
   }
 
   @Override
@@ -45,14 +45,14 @@ public class CustomerServiceImpl implements CustomerService {
     customerEntityToUpdate.setCustomerID(customer.getCustomerID());
     customerRepository.save(customerEntityToUpdate);
 
-    return customerConvertor.toModel(customerEntityToUpdate);
+    return customerConvertor.toDTO(customerEntityToUpdate);
   }
 
   @Override
   public Optional<Customer> findById(Integer id) {
     Optional<CustomerEntity> foundCustomerEntity
         = customerRepository.findById(id);
-    return foundCustomerEntity.map(customerEntity -> customerConvertor.toModel(customerEntity));
+    return foundCustomerEntity.map(customerEntity -> customerConvertor.toDTO(customerEntity));
   }
 
 
@@ -61,7 +61,7 @@ public class CustomerServiceImpl implements CustomerService {
   public List<Customer> listCustomers() {
     final List<CustomerEntity> foundCustomers = customerRepository.findAll();
     return foundCustomers.stream()
-        .map(customerEntity -> customerConvertor.toModel(customerEntity))
+        .map(customerEntity -> customerConvertor.toDTO(customerEntity))
         .collect(Collectors.toList());
   }
 

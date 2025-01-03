@@ -1,8 +1,8 @@
 package io.aditya.kam.utils;
 
-import io.aditya.kam.model.Customer;
-import io.aditya.kam.model.CustomerOrder;
-import io.aditya.kam.model.Interaction;
+import io.aditya.kam.dto.Customer;
+import io.aditya.kam.dto.CustomerOrder;
+import io.aditya.kam.dto.Interaction;
 import io.aditya.kam.enums.LeadStatus;
 import io.aditya.kam.service.CustomerOrderService;
 import io.aditya.kam.service.CustomerService;

@@ -3,7 +3,7 @@ package io.aditya.kam.controller;
 
 import io.aditya.kam.comparator.customer.CustomerComparatorFactory;
 import io.aditya.kam.exception.CustomerNotFoundException;
-import io.aditya.kam.model.Customer;
+import io.aditya.kam.dto.Customer;
 import io.aditya.kam.service.CustomerService;
 import io.aditya.kam.service.KeyAccountManagerService;
 import io.aditya.kam.service.PointOfContactService;

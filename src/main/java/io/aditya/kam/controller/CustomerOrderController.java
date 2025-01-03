@@ -1,6 +1,6 @@
 package io.aditya.kam.controller;
 
-import io.aditya.kam.model.CustomerOrder;
+import io.aditya.kam.dto.CustomerOrder;
 import io.aditya.kam.service.CustomerOrderService;
 import java.util.List;
 import java.util.Objects;

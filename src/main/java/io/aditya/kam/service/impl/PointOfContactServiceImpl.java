@@ -1,7 +1,7 @@
 package io.aditya.kam.service.impl;
 
 import io.aditya.kam.convertor.PointOfContactConvertor;
-import io.aditya.kam.model.PointOfContact;
+import io.aditya.kam.dto.PointOfContact;
 import io.aditya.kam.entity.PointOfContactEntity;
 import io.aditya.kam.repository.PointOfContactRepository;
 import io.aditya.kam.service.PointOfContactService;

@@ -1,8 +1,7 @@
 package io.aditya.kam.service.impl;
 
-import io.aditya.kam.convertor.CustomerConvertor;
 import io.aditya.kam.convertor.InteractionConvertor;
-import io.aditya.kam.model.Interaction;
+import io.aditya.kam.dto.Interaction;
 import io.aditya.kam.entity.InteractionEntity;
 import io.aditya.kam.repository.InteractionRepository;
 import io.aditya.kam.service.InteractionService;
@@ -35,7 +34,7 @@ public class InteractionServiceImpl implements InteractionService {
   public Interaction create(Interaction interaction) {
     InteractionEntity interactionEntity =
         interactionRepository.save(interactionConvertor.toEntity(interaction));
-    return interactionConvertor.toModel(interactionEntity);
+    return interactionConvertor.toDTO(interactionEntity);
   }
 
   @Override
@@ -43,7 +42,7 @@ public class InteractionServiceImpl implements InteractionService {
     Optional<InteractionEntity> foundInteractionEntity
         = interactionRepository.findById(id);
 
-    return foundInteractionEntity.map(interactionEntity -> interactionConvertor.toModel(interactionEntity));
+    return foundInteractionEntity.map(interactionEntity -> interactionConvertor.toDTO(interactionEntity));
 
   }
 
@@ -51,7 +50,7 @@ public class InteractionServiceImpl implements InteractionService {
   public List<Interaction> listInteractions() {
     final List<InteractionEntity> foundInteractions = interactionRepository.findAll();
     return foundInteractions.stream()
-        .map(interactionEntity -> interactionConvertor.toModel(interactionEntity))
+        .map(interactionEntity -> interactionConvertor.toDTO(interactionEntity))
         .collect(Collectors.toList());
   }
 

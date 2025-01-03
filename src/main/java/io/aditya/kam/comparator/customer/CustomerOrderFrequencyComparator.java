@@ -1,6 +1,6 @@
 package io.aditya.kam.comparator.customer;
 
-import io.aditya.kam.model.Customer;
+import io.aditya.kam.dto.Customer;
 import java.util.Comparator;
 
 

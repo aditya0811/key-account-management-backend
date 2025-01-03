@@ -3,7 +3,7 @@ package io.aditya.kam.convertor;
 import io.aditya.kam.entity.CustomerEntity;
 import io.aditya.kam.enums.CustomerType;
 import io.aditya.kam.enums.LeadStatus;
-import io.aditya.kam.model.Customer;
+import io.aditya.kam.dto.Customer;
 import org.springframework.stereotype.Service;
 
 
@@ -28,7 +28,7 @@ public class CustomerConvertor {
   }
 
 
-  public Customer toModel(CustomerEntity customerEntity) {
+  public Customer toDTO(CustomerEntity customerEntity) {
     return Customer.builder().customerID(customerEntity.getCustomerID())
         .name(customerEntity.getName())
         .address(customerEntity.getAddress())

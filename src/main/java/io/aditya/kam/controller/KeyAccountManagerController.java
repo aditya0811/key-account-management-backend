@@ -1,6 +1,6 @@
 package io.aditya.kam.controller;
 
-import io.aditya.kam.model.KeyAccountManager;
+import io.aditya.kam.dto.KeyAccountManager;
 import io.aditya.kam.service.KeyAccountManagerService;
 import jakarta.validation.Valid;
 import java.util.List;

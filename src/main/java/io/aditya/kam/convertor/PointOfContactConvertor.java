@@ -1,7 +1,7 @@
 package io.aditya.kam.convertor;
 
 import io.aditya.kam.entity.PointOfContactEntity;
-import io.aditya.kam.model.PointOfContact;
+import io.aditya.kam.dto.PointOfContact;
 import org.springframework.stereotype.Service;
 
 

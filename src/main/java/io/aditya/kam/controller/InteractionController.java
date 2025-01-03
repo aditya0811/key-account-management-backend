@@ -2,8 +2,8 @@ package io.aditya.kam.controller;
 
 import io.aditya.kam.exception.CustomerNotFoundException;
 import io.aditya.kam.exception.PointOfContactNotFoundException;
-import io.aditya.kam.model.Customer;
-import io.aditya.kam.model.Interaction;
+import io.aditya.kam.dto.Customer;
+import io.aditya.kam.dto.Interaction;
 import io.aditya.kam.service.CustomerService;
 import io.aditya.kam.service.InteractionService;
 import io.aditya.kam.service.CustomerOrderService;

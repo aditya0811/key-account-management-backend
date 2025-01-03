@@ -1,4 +1,4 @@
-package io.aditya.kam.model;
+package io.aditya.kam.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,8 +23,6 @@ public class Interaction {
   String interactionComment;
   Boolean isKeyAccountManagerChanged=false;
   Integer changedKeyAccountManagerID;
-  Boolean isPointOfContactChanged=false;
-  Integer changedPointOfContactID;
   Boolean isOrderPlaced=false;
   Integer transactionValue=0;
 
