@@ -19,10 +19,19 @@ Built a Key account management system with the following features
 
 <ol>
 <li> API Key authentication <li>
-<li>Adding key account manager</li> 
-<li>Adding customers(like restaurants leads) for key account manager</li> 
-<li>Adding multiple point of contact for a customer and updating point of contact for the customer and key account manager</li> 
-<li>Adding interactions(calls/offline discussion) between point of contact and key account manager</li>  
+<li> Adding key account manager</li> 
+<li> Adding customers(like restaurants leads) for key account manager</li> 
+<li> Adding multiple point of contact for a customer and updating point of contact for the customer and key account manager</li> 
+<li>Updating next meeting timestamp on the basis of common working hours between customer and key account manager, with customer timezone given preference, if there is no common time.
+<li> Adding interactions(calls/offline discussion) between point of contact and key account manager</li> 
+ <ol>
+  <li> Handling change in key account manager for a customer, after an interaction.
+   <li> Updating customer table with total orders and total TPV
+    <li> Udpating orders table, if an order is placed after interaction
+     <li>Every interaction leads to change in last meeting timestamp, and updating next meeting timestamp using frequency of days a customer needs to be called</li>
+  <li> Changing Lead status, if number of interactions is greater than zero for a customer
+   <li> Updating lead status if the interaction led to conversion of customer.
+ </ol>
   
 <li>Adding order details corresponding to an interaction</li> 
 <li>Listing interactions scheduled today for a given key account manager</li> 
