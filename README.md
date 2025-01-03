@@ -18,12 +18,12 @@
 Built a Key account management system with the following features
 
 <ol>
+<li> API Key authentication <li>
 <li>Adding key account manager</li> 
 <li>Adding customers(like restaurants leads) for key account manager</li> 
 <li>Adding multiple point of contact for a customer and updating point of contact for the customer and key account manager</li> 
 <li>Adding interactions(calls/offline discussion) between point of contact and key account manager</li>  
-  - lol
-  - lol2
+  
 <li>Adding order details corresponding to an interaction</li> 
 <li>Listing interactions scheduled today for a given key account manager</li> 
 <li>Listing interactions scheduled today for a given key account manager</li>
