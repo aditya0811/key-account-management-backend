@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -51,9 +52,16 @@ public class CustomerController {
   }
 
   @PutMapping(path="/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}")
-  public ResponseEntity<Customer> updateCustomer (@PathVariable Integer customerID,
-      @PathVariable Integer keyAccountManagerID,
-      @RequestBody final Customer customer) throws CustomerNotFoundException {
+  public ResponseEntity<Customer> updateCustomer (@PathVariable Integer keyAccountManagerID,
+      @PathVariable Integer customerID,
+      @RequestBody final Customer customer,
+      @RequestParam(value="update-point-of-contact", required = false) Boolean updatePointOfContact)
+      throws CustomerNotFoundException {
+
+    if (updatePointOfContact != null && updatePointOfContact) {
+      return updatedCustomerWithPointOfContactID(customerID, customer);
+    }
+
     final boolean isCustomerExists = customerService.isCustomerIDExists(customer);
     final Customer savedCustomer = customerService.update(customer);
     if (isCustomerExists) {
@@ -71,45 +79,24 @@ public class CustomerController {
         .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
 
-
   @GetMapping(path = "/v1/key-account-managers/{keyAccountManagerID}/customers")
-  public ResponseEntity<List<Customer>> listAllCustomersForKeyAccountManager(@PathVariable Integer keyAccountManagerID) {
-    List<Customer> keyAccountManagerCustomers = customerService
-        .listCustomers()
-        .stream()
-        .filter(customer -> Objects.equals(customer.getKeyAccountManagerID(), keyAccountManagerID))
-        .toList();
-    return new ResponseEntity<List<Customer>>(keyAccountManagerCustomers, HttpStatus.OK);
-  }
-
-  //TODO Non Restful, need to update this a) initial(first poc) (b) interaction (change in poc true, need to invoke endpoint, or just method will?)
-  @PutMapping(path="/v1/key-account-managers/{keyAccountManagerID}/customers/{customerID}/update-point-of-contact")
-  public ResponseEntity<Customer> updatePointOfContactID(
-      @PathVariable Integer customerID,
-      @RequestBody final Customer customer) throws CustomerNotFoundException{
-
-    Optional<Customer> customerFromDB = customerService.findById(customerID);
-    if (customerFromDB.isPresent()) {
-
-      customerFromDB.get().setPointOfContactID(customer.getPointOfContactID());
-
-      String nextMeetingTimestamp = ApplicationUtils.getDateWithFrequencyOfCalls(keyAccountManagerService,
-          pointOfContactService, customerFromDB.get());
-      customerFromDB.get().setNextCallScheduledTimestamp(nextMeetingTimestamp);
-
-
-      final Customer savedCustomer = customerService.update(customerFromDB.get());
-      return new ResponseEntity<>(savedCustomer, HttpStatus.OK);
-    } else {
-      throw new CustomerNotFoundException("Customer does not exists");
-    }
-  }
-
-
-
-  @GetMapping(path = "/v1/key-account-managers/{keyAccountManagerID}/customers/{metric}/{count}/{descending}")
   public ResponseEntity<List<Customer>> listAllCustomersForKeyAccountManagerForMetric(@PathVariable Integer keyAccountManagerID,
-      @PathVariable String metric, @PathVariable int count, @PathVariable boolean descending) {
+      @RequestParam(value= "metric", required = false) String metric,
+      @RequestParam(value="count", required = false) Integer count,
+      @RequestParam(value="descending", required = false) Boolean descending,
+      @RequestParam(value="interactions-scheduled-today", required = false) Boolean interactionsScheduledToday) {
+    if (metric == null && interactionsScheduledToday == null) {
+      //TODO Add custom validation
+      return listAllCustomersForKeyAccountManager(keyAccountManagerID);
+    } else if (interactionsScheduledToday != null && interactionsScheduledToday) {
+      return listAllCustomersScheduledForToday(keyAccountManagerID);
+    }
+    return listCustomersForKeyAccountManagerSatisfyingMetricQuery(keyAccountManagerID, metric, descending, count);
+
+  }
+
+  private ResponseEntity<List<Customer>> listCustomersForKeyAccountManagerSatisfyingMetricQuery(
+      Integer keyAccountManagerID, String metric, Boolean descending, Integer count) {
     List<Customer> keyAccountManagerCustomers = new java.util.ArrayList<>(customerService
         .listCustomers().stream()
         .filter(customer -> Objects.equals(customer.getKeyAccountManagerID(), keyAccountManagerID))
@@ -137,8 +124,37 @@ public class CustomerController {
         Math.min(count,keyAccountManagerCustomersCount)), HttpStatus.OK);
   }
 
-  @GetMapping(path = "/v1/key-account-managers/{keyAccountManagerID}/customers/interactions-scheduled-today")
-  public ResponseEntity<List<Customer>> listAllCustomersScheduledForToday(@PathVariable Integer keyAccountManagerID) {
+  private ResponseEntity<List<Customer>> listAllCustomersForKeyAccountManager(Integer keyAccountManagerID) {
+    List<Customer> keyAccountManagerCustomers = customerService
+        .listCustomers()
+        .stream()
+        .filter(customer -> Objects.equals(customer.getKeyAccountManagerID(), keyAccountManagerID))
+        .toList();
+    return new ResponseEntity<List<Customer>>(keyAccountManagerCustomers, HttpStatus.OK);
+  }
+
+  private ResponseEntity<Customer> updatedCustomerWithPointOfContactID(Integer customerID, Customer customer)
+      throws CustomerNotFoundException {
+
+    Optional<Customer> customerFromDB = customerService.findById(customerID);
+    if (customerFromDB.isPresent()) {
+
+      customerFromDB.get().setPointOfContactID(customer.getPointOfContactID());
+
+      String nextMeetingTimestamp = ApplicationUtils.getDateWithFrequencyOfCalls(keyAccountManagerService,
+          pointOfContactService, customerFromDB.get());
+      customerFromDB.get().setNextCallScheduledTimestamp(nextMeetingTimestamp);
+
+
+      final Customer savedCustomer = customerService.update(customerFromDB.get());
+      return new ResponseEntity<>(savedCustomer, HttpStatus.OK);
+    } else {
+      throw new CustomerNotFoundException("Customer does not exists");
+    }
+  }
+
+
+  private ResponseEntity<List<Customer>> listAllCustomersScheduledForToday(Integer keyAccountManagerID) {
     List<Customer> keyAccountManagerCustomers = customerService.listCustomers().stream()
         .filter(customer -> Objects.equals(customer.getKeyAccountManagerID(), keyAccountManagerID) &&
                 Objects.equals(customer.getNextCallScheduledTimestamp().substring(0,10),
