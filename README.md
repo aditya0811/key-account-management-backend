@@ -18,7 +18,7 @@
 Built a Key account management system with the following features
 
 <ol>
-<li> API Key authentication <li>
+<li> API Key authentication </li>
 <li> Adding key account manager</li> 
 <li> Adding customers(like restaurants leads) for key account manager</li> 
 <li> Adding multiple point of contact for a customer and updating point of contact for the customer and key account manager</li> 
