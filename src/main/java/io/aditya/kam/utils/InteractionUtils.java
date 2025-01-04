@@ -15,7 +15,7 @@ public class InteractionUtils {
 
   /**
    *
-   * @param interaction interaction having order details, KAM changed, last call scheduled. lead status
+   * @param interaction interaction having order details, KAM changed, last call scheduled, lead status
    * @param customerService Use to update customer table in case of lead status change, order palced, KAM changed
    * @param customerOrderService Use to update CustomerOrder table if an order is placed
    * @param keyAccountManagerService Use to find common hours for next meeting
