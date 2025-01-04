@@ -33,7 +33,7 @@ Built a Key account management system with the following features
  </ol> 
 <li>Listing interactions scheduled today for a given key account manager</li> 
 <li>Listing top X (high performing) and bottom X(underperforming) customers for a praticular key account manager on the basis of total transaction value</li> 
-<li>API documentation is accessible via both browser ```http://localhost:8080/v3/swagger-ui/index.html#/``` and postman ```http://localhost:8080/v3/swagger-ui/index.html#/``` </li>
+<li>API documentation is accessible via both browser (http://localhost:8080/v3/swagger-ui/index.html#/) and postman (http://localhost:8080/v3/swagger-ui/index.html#/) </li>
 </ol>
 
 ## Getting started 
