@@ -10,6 +10,7 @@ import io.aditya.kam.service.CustomerOrderService;
 import io.aditya.kam.service.KeyAccountManagerService;
 import io.aditya.kam.service.PointOfContactService;
 import io.aditya.kam.utils.ApplicationUtils;
+import io.aditya.kam.utils.InteractionUtils;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -61,7 +62,7 @@ public class InteractionController {
     }
     interaction.setPointOfContactID(foundCustomer.get().getPointOfContactID());
 
-    ApplicationUtils.updateCustomerAndOrder(interaction, customerService, customerOrderService,
+    InteractionUtils.updateCustomerAndOrder(interaction, customerService, customerOrderService,
         keyAccountManagerService, pointOfContactService);
 
     final Interaction savedInteraction = interactionService.create(interaction);

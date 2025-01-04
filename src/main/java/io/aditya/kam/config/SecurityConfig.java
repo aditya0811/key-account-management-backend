@@ -55,7 +55,7 @@ public class SecurityConfig {
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
         .csrf().disable()
         .authorizeHttpRequests()
-        .requestMatchers("/v3/**","/swagger**")
+        .requestMatchers("/v3/**","/swagger**", "/h2-console/**")
         .permitAll()
         .and()
         .addFilter(filter).authorizeHttpRequests()

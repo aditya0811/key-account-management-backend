@@ -29,11 +29,6 @@ public class KeyAccountManagerEntity {
   Integer keyAccountManagerID;
   String name;
   String role;
-
-  //Should have country code
   String contactInformation;
-
   String workingHours;
-
-
 }

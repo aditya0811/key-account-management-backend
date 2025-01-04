@@ -115,10 +115,11 @@ public class ApplicationUtils {
 
   /**
    *
+   * Here we are trying to return current date + X frequency days, along with common time hour.
    * @param keyAccountManagerService keyAccountManagerService
    * @param pointOfContactService pointOfContactService
    * @param customer customer
-   * @return
+   * @return YYYY-MM-DD HH:mm UTC
    */
   public static String getDateWithFrequencyOfCalls(KeyAccountManagerService keyAccountManagerService,
       PointOfContactService pointOfContactService, Customer customer) {
@@ -132,66 +133,25 @@ public class ApplicationUtils {
 
   }
 
+  /**
+   * Returns current date timestamp in certain format
+   * @return yyyy-MM-dd HH:mm
+   */
   public static String getCurrentTimestamp() {
     LocalDateTime now = LocalDateTime.now();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     return now.format(formatter);
   }
 
+  /**
+   * Returns current date in certain format
+   * @return yyyy-MM-dd
+   */
   public static String getCurrentDate() {
     LocalDateTime now = LocalDateTime.now();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     return now.format(formatter);
   }
 
-  public static void updateCustomerAndOrder(Interaction interaction, CustomerService customerService,
-      CustomerOrderService customerOrderService, KeyAccountManagerService keyAccountManagerService,
-      PointOfContactService pointOfContactService) {
-    Optional<Customer> optionalCustomer = customerService.findById(interaction.getCustomerID());
-    if(optionalCustomer.isPresent()) {
-      Customer customer = optionalCustomer.get();
-      if (customer.getLeadStatus() == LeadStatus.PROSPECTIVE) {
-        customer.setLeadStatus(LeadStatus.TRACKING);
-      }
-      if (interaction.getIsConverted()){
-        customer.setLeadStatus(LeadStatus.CONVERTED);
-      }
 
-      if (interaction.getIsKeyAccountManagerChanged()){
-        customer.setKeyAccountManagerID(interaction.getChangedKeyAccountManagerID());
-      }
-
-      if (interaction.getIsOrderPlaced()){
-        customer.setNumberOfOrders(customer.getNumberOfOrders()+1);
-        customer.setTotalTransactionValue(customer.getTotalTransactionValue()+interaction.getTransactionValue());
-        CustomerOrder customerOrder = CustomerOrder.builder()
-            .customerID(interaction.getCustomerID())
-            .orderID(interaction.getOrderID())
-            .transactionValue(interaction.getTransactionValue())
-            .interactionID(interaction.getInteractionID())
-            .build();
-        customerOrderService.create(customerOrder);
-      }
-
-      //poc update before call update
-
-      //last call is updated with current call
-
-      StringBuilder temp = new StringBuilder();
-      for(char ch:customer.getNextCallScheduledTimestamp().toCharArray() ) {
-        temp.append(ch);
-      }
-
-      customer.setLastCallScheduledTimestamp(temp.toString());
-      String nextMeetingTimestamp = ApplicationUtils.getDateWithFrequencyOfCalls(keyAccountManagerService,
-          pointOfContactService, customer);
-      customer.setNextCallScheduledTimestamp(nextMeetingTimestamp);
-
-
-      //final save customer
-      customerService.update(customer);
-    }
-
-
-  }
 }

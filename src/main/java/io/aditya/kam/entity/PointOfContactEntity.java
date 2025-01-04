@@ -25,9 +25,6 @@ public class PointOfContactEntity {
   Integer customerID;
   String name;
   String role;
-
-  //Should have country code
   String contactInformation;
-
   String workingHours;
 }
