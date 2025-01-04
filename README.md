@@ -26,8 +26,7 @@ Built a Key account management system with the following features
 <li> Adding interactions(calls) between point of contact and key account manager. Following are things possible post an interaction.</li> 
  <ol>
   <li> Handling change in key account manager for a customer.
-   <li> Updating orders table, if an order is placed after an interaction. And consequently updating customer table with total orders and total TPV.
-    <li> 
+   <li> Updating orders table, if an order is placed after an interaction. And consequently updating customer table with total orders and total TPV.</li>
      <li>Every interaction leads to change in last meeting timestamp, and updating next meeting timestamp using frequency of days a customer needs to be called</li>
   <li> Changing lead status, if number of interactions is greater than zero for a customer.
    <li> Updating lead status if the interaction led to conversion of customer.
